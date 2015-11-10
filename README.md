@@ -1,4 +1,5 @@
-# BGSE Dashboard Project: Product Recommendation and Customer Analysis
+# PROXIMITY EFFECTS AND CONSUMER SENTIMENT
+### Group 1 (Halliwell, Panova, Sudmann-Day) 
 
 ### Overview
 
