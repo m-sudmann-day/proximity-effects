@@ -10,14 +10,21 @@ pswd=`grep dbpswd service.conf | cut -f2 -d' '`
 target_dir='/var/www/html'
 #target_dir=$HOME/public_html
 
+
+
 case $cmd in
 
 install)
-	echo "Installing"
-
-	mysql -u $user -p$pswd < db/ecommerce.sql
-	mysql -u $user -p$pswd < data/ecommerce-dump.sql
-	mysql -u $user -p$pswd < analysis/Customers_by_product.sql
+	echo "Installing..."
+	pwd
+	echo "  Creating database schema"
+	mysql -u $user -p$pswd < db/schema.sql
+	echo "  Loading data..."
+	mysql -u $user -p$pswd < db/load_data.sql
+	echo "  Cleaning data..."
+	mysql -u $user -p$pswd < db/cleanup_data.sql
+	echo "  Creating routines..."
+	mysql -u $user -p$pswd < db/routines.sql
 
 	mkdir -p "$target_dir/MyApp"
 	cp -rf web/* "$target_dir/MyApp"
