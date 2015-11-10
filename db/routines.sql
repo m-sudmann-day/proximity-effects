@@ -1,31 +1,40 @@
 
-USE distance_effects;
+USE proximity_effects;
 
 DELIMITER $$
-CREATE PROCEDURE GetBusinessesForArea(AreaFilter varchar(6))
+CREATE PROCEDURE GetAllAreas()
 BEGIN
-	SELECT ID, Name, Longitude, Latitude, ReviewCount, YelpStars
-	FROM Business
-    WHERE Area = AreaFilter;
+	SELECT b.*
+	FROM Business b
+    WHERE AreaID = _AreaID;
 END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE GetBusinessCategoriesForArea(AreaFilter varchar(6))
+CREATE PROCEDURE GetBusinessesForArea(_AreaID int)
+BEGIN
+	SELECT b.*
+	FROM Business b
+    WHERE AreaID = _AreaID;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE GetBusinessCategoriesForArea(_AreaID int)
 BEGIN
 	SELECT bc.*
 	FROM BusinessCategory bc
     INNER JOIN Business b ON bc.BusinessID = b.ID
-    WHERE b.Area = AreaFilter;
+    WHERE b.AreaID = _AreaID;
 END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE GetReviewsForArea(AreaFilter varchar(6))
+CREATE PROCEDURE GetReviewsForArea(_AreaID int)
 BEGIN
 	SELECT r.*
 	FROM Review r
     INNER JOIN Business b ON r.BusinessID = b.ID
-    WHERE b.Area = AreaFilter;
+    WHERE b.Area = _AreaID;
 END $$
 DELIMITER ;

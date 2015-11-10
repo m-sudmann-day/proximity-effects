@@ -1,12 +1,12 @@
 ID;Name;IsActive
-99;Miscellaneous;False
-1;Edinburgh, UK;False
-2;Karlsruhe, Germany;False
-3;Charlotte, NC;True
-4;Phoenix, AZ;True
-5;Urbana-Champaign, IL;True
-6;Las Vegas, NV;True
-7;Pittsburgh, PA;True
-8;Madison, WI;True
-9;Montreal, QC;False
-10;Waterloo, ON;False
+1;Edinburgh, UK;0
+2;Karlsruhe, Germany;0
+3;Charlotte, NC;1
+4;Phoenix, AZ;1
+5;Urbana-Champaign, IL;1
+6;Las Vegas, NV;1
+7;Pittsburgh, PA;1
+8;Madison, WI;1
+9;Montreal, QC;0
+10;Waterloo, ON;0
+99;Miscellaneous;0
