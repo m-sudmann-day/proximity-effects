@@ -10,15 +10,15 @@ pswd=`grep dbpswd service.conf | cut -f2 -d' '`
 target_dir='/var/www/html'
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 db_dir="$current_dir/db"
-
-echo $current_dir
-echo $db_dir
+data_dir="current_dir/data"
 
 case $cmd in
 
 install)
 	echo "Installing..."
 	pwd
+	sudo chmod 777 $db_dir
+	sudo chmod 777 $data_dir
         sudo chmod 777 $target_dir
 	echo "  Creating database schema..."
 	mysql -u $user -p$pswd < $db_dir/schema.sql
