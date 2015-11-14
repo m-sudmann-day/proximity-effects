@@ -1,0 +1,788 @@
+ID, Name
+21916,Doctors
+21917,Health & Medical
+21918,Nightlife
+21919,Active Life
+21920,Mini Golf
+21921,Golf
+21922,Shopping
+21923,Home Services
+21924,Internet Service Providers
+21925,Mobile Phones
+21926,Professional Services
+21927,Electronics
+21928,Bars
+21929,American (New)
+21930,Lounges
+21931,Restaurants
+21932,American (Traditional)
+21933,Auto Repair
+21934,Automotive
+21935,Contractors
+21936,Burgers
+21937,Breakfast & Brunch
+21938,Food
+21939,Grocery
+21940,Cafes
+21941,Hotels & Travel
+21942,Event Planning & Services
+21943,Hotels
+21944,Pubs
+21945,Irish
+21946,Local Services
+21947,Sewing & Alterations
+21948,Dentists
+21949,General Dentistry
+21950,Chinese
+21951,Gyms
+21952,Trainers
+21953,Fitness & Instruction
+21954,Italian
+21955,Periodontists
+21956,Orthodontists
+21957,Fast Food
+21958,Coffee & Tea
+21959,Arts & Crafts
+21960,Knitting Supplies
+21961,Hobby Shops
+21962,Department Stores
+21963,Fashion
+21964,Body Shops
+21965,Building Supplies
+21966,Home & Garden
+21967,Hardware Stores
+21968,Nurseries & Gardening
+21969,Arts & Entertainment
+21970,Arcades
+21971,Breweries
+21972,Comedy Clubs
+21973,Videos & Video Game Rental
+21974,Books
+21975,Mags
+21976,Music & Video
+21977,Bookstores
+21978,Swimming Pools
+21979,Mattresses
+21980,Airport Shuttles
+21981,Limos
+21982,Transportation
+21983,Food Delivery Services
+21984,Pizza
+21985,Gluten-Free
+21986,Lingerie
+21987,Asian Fusion
+21988,Shoe Stores
+21989,Soup
+21990,Sandwiches
+21991,Salad
+21992,Veterinarians
+21993,Pets
+21994,Men's Clothing
+21995,Formal Wear
+21996,Discount Store
+21997,Seafood
+21998,Women's Clothing
+21999,Children's Clothing
+22000,Sporting Goods
+22001,Outdoor Gear
+22002,Sports Wear
+22003,Bikes
+22004,Thrift Stores
+22005,Bakeries
+22006,Desserts
+22007,Caterers
+22008,Tattoo
+22009,Piercing
+22010,Beauty & Spas
+22011,Sports Bars
+22012,Flowers & Gifts
+22013,Florists
+22014,Nail Salons
+22015,Hair Salons
+22016,Ice Cream & Frozen Yogurt
+22017,Movers
+22018,Antiques
+22019,Home Decor
+22020,Beer
+22021,Wine & Spirits
+22022,Pet Services
+22023,Pet Groomers
+22024,Pet Boarding/Pet Sitting
+22025,Tapas/Small Plates
+22026,Auto Parts & Supplies
+22027,Drugstores
+22028,Men's Hair Salons
+22029,Animal Shelters
+22030,Tires
+22031,Oil Change Stations
+22032,Real Estate Services
+22033,Real Estate
+22034,Barbeque
+22035,Furniture Stores
+22036,Pet Stores
+22037,Chiropractors
+22038,Performing Arts
+22039,Keys & Locksmiths
+22040,Security Systems
+22041,Specialty Schools
+22042,Education
+22043,Cooking Schools
+22044,Travel Services
+22045,Libraries
+22046,Public Services & Government
+22047,Music Venues
+22048,Appliances
+22049,Art Schools
+22050,Dry Cleaning & Laundry
+22051,Specialty Food
+22052,Tennis
+22053,Wine Bars
+22054,Mediterranean
+22055,Vegetarian
+22056,Health Markets
+22057,Climbing
+22058,Portuguese
+22059,Museums
+22060,Landmarks & Historical Buildings
+22061,Skin Care
+22062,Banks & Credit Unions
+22063,Financial Services
+22064,Mortgage Brokers
+22065,Diners
+22066,Motorcycle Dealers
+22067,Photography Stores & Services
+22068,German
+22069,Delis
+22070,Bed & Breakfast
+22071,Dive Bars
+22072,Bistros
+22073,Cinema
+22074,Chicken Wings
+22075,Barbers
+22076,Leisure Centers
+22077,Hot Dogs
+22078,Kids Activities
+22079,Professional Sports Teams
+22080,Stadiums & Arenas
+22081,Churches
+22082,Religious Organizations
+22083,Print Media
+22084,Mass Media
+22085,Meat Shops
+22086,Party & Event Planning
+22087,Polish
+22088,Greek
+22089,Music & DVDs
+22090,Fireplace Services
+22091,Reflexology
+22092,Reiki
+22093,DJs
+22094,Sushi Bars
+22095,Japanese
+22096,Pool Halls
+22097,Lighting Fixtures & Equipment
+22098,Heating & Air Conditioning/HVAC
+22099,Indian
+22100,Bowling
+22101,Printing Services
+22102,Office Equipment
+22103,Bridal
+22104,Used
+22105,Vintage & Consignment
+22106,Mexican
+22107,Tex-Mex
+22108,Shoe Repair
+22109,Beaches
+22110,Gas & Service Stations
+22111,Kitchen & Bath
+22112,Bagels
+22113,Tours
+22114,Donuts
+22115,Shopping Centers
+22116,Flooring
+22117,Venues & Event Spaces
+22118,Comfort Food
+22119,Tapas Bars
+22120,Cocktail Bars
+22121,Ethnic Food
+22122,Public Transportation
+22123,Car Rental
+22124,Wholesale Stores
+22125,Cosmetics & Beauty Supply
+22126,Hair Removal
+22127,Hair Stylists
+22128,Art Galleries
+22129,Steakhouses
+22130,Optometrists
+22131,Ophthalmologists
+22132,Eyewear & Opticians
+22133,Gay Bars
+22134,Community Service/Non-Profit
+22135,Luggage
+22136,Candy Stores
+22137,Korean
+22138,Midwives
+22139,Chocolatiers & Shops
+22140,Massage
+22141,Opera & Ballet
+22142,Car Wash
+22143,Souvenir Shops
+22144,Cards & Stationery
+22145,Train Stations
+22146,Furniture Reupholstery
+22147,Fabric Stores
+22148,Cheese Shops
+22149,Karaoke
+22150,Vietnamese
+22151,Thai
+22152,Vinyl Records
+22153,Newspapers & Magazines
+22154,Tanning
+22155,Gift Shops
+22156,Car Dealers
+22157,Middle Eastern
+22158,Musical Instruments & Teachers
+22159,Day Spas
+22160,Hair Extensions
+22161,Tobacco Shops
+22162,Acupuncture
+22163,Traditional Chinese Medicine
+22164,Hospitals
+22165,Tea Rooms
+22166,Toy Stores
+22167,Accessories
+22168,Convenience Stores
+22169,Jewelry
+22170,Watches
+22171,Peruvian
+22172,Latin American
+22173,Shipping Centers
+22174,Post Offices
+22175,Apartments
+22176,Creperies
+22177,French
+22178,Leather Goods
+22179,Taiwanese
+22180,Do-It-Yourself Food
+22181,Colleges & Universities
+22182,Gun/Rifle Ranges
+22183,Guns & Ammo
+22184,Horseback Riding
+22185,Parks
+22186,Local Flavor
+22187,Amateur Sports Teams
+22188,Pet Training
+22189,Baby Gear & Furniture
+22190,Appliances & Repair
+22191,Computers
+22192,IT Services & Computer Repair
+22193,Buffets
+22194,Windows Installation
+22195,Skating Rinks
+22196,Southern
+22197,Cajun/Creole
+22198,Resorts
+22199,Amusement Parks
+22200,Funeral Services & Cemeteries
+22201,Recreation Centers
+22202,Signmaking
+22203,Television Service Providers
+22204,Soul Food
+22205,Adult Entertainment
+22206,Photographers
+22207,Summer Camps
+22208,Juice Bars & Smoothies
+22209,Dance Clubs
+22210,Parking
+22211,Framing
+22212,Electricians
+22213,Weight Loss Centers
+22214,Vocational & Technical School
+22215,Adult Education
+22216,Caribbean
+22217,Cosmetic Dentists
+22218,Botanical Gardens
+22219,Landscaping
+22220,Fondue
+22221,Uniforms
+22222,Notaries
+22223,Pakistani
+22224,Malaysian
+22225,Yoga
+22226,Tax Services
+22227,Financial Advising
+22228,Comic Books
+22229,Ethiopian
+22230,Jazz & Blues
+22231,Obstetricians & Gynecologists
+22232,Dance Schools
+22233,Go Karts
+22234,Airports
+22235,Personal Assistants
+22236,Country Dance Halls
+22237,Ear Nose & Throat
+22238,Cosmetic Surgeons
+22239,Podiatrists
+22240,Family Practice
+22241,Urgent Care
+22242,Oral Surgeons
+22243,Property Management
+22244,Elementary Schools
+22245,Preschools
+22246,Divorce & Family Law
+22247,Lawyers
+22248,Persian/Iranian
+22249,Hookah Bars
+22250,Buddhist Temples
+22251,Truck Rental
+22252,Surfing
+22253,Synagogues
+22254,Laser Eye Surgery/Lasik
+22255,Party Supplies
+22256,Costumes
+22257,Employment Agencies
+22258,Medical Centers
+22259,First Aid Classes
+22260,Radio Stations
+22261,Swimwear
+22262,Car Stereo Installation
+22263,Sports Clubs
+22264,Martial Arts
+22265,Swimming Lessons/Schools
+22266,Hiking
+22267,Laser Hair Removal
+22268,Dermatologists
+22269,RV Parks
+22270,Campgrounds
+22271,Television Stations
+22272,Pilates
+22273,Art Supplies
+22274,Landscape Architects
+22275,Race Tracks
+22276,Adult
+22277,Taxis
+22278,Wedding Planning
+22279,Bike Rentals
+22280,Lebanese
+22281,Internet Cafes
+22282,Video Game Stores
+22283,Medical Supplies
+22284,Self Storage
+22285,Pet Adoption
+22286,Accountants
+22287,Payroll Services
+22288,Motorcycle Repair
+22289,Telecommunications
+22290,Boating
+22291,Plumbing
+22292,Windshield Installation & Repair
+22293,Auto Glass Services
+22294,Fertility
+22295,University Housing
+22296,Social Clubs
+22297,Towing
+22298,Interior Design
+22299,Spanish
+22300,Tree Services
+22301,Home Cleaning
+22302,Fruits & Veggies
+22303,Middle Schools & High Schools
+22304,Beer Bar
+22305,Cheesesteaks
+22306,Cardiologists
+22307,Screen Printing/T-Shirt Printing
+22308,Medical Spas
+22309,Fish & Chips
+22310,Salvadoran
+22311,Gardeners
+22312,Orthopedists
+22313,Carpet Cleaning
+22314,Carpeting
+22315,Screen Printing
+22316,Graphic Design
+22317,Electronics Repair
+22318,Zoos
+22319,Registration Services
+22320,Child Care & Day Care
+22321,Outlet Stores
+22322,Life Coach
+22323,Career Counseling
+22324,Pawn Shops
+22325,British
+22326,Makeup Artists
+22327,Tattoo Removal
+22328,Solar Installation
+22329,Estate Planning Law
+22330,Counseling & Mental Health
+22331,Gymnastics
+22332,Party Equipment Rentals
+22333,Maternity Wear
+22334,Wigs
+22335,Bike Repair/Maintenance
+22336,Kosher
+22337,Carpet Installation
+22338,Session Photography
+22339,Cupcakes
+22340,Speech Therapists
+22341,Occupational Therapy
+22342,Physical Therapy
+22343,Dog Walkers
+22344,Sports Medicine
+22345,Waxing
+22346,Eyelash Service
+22347,Hot Tub & Pool
+22348,Festivals
+22349,Auto Detailing
+22350,Vegan
+22351,Dance Studios
+22352,Couriers & Delivery Services
+22353,Hawaiian
+22354,Internal Medicine
+22355,Battery Stores
+22356,Jewelry Repair
+22357,Cuban
+22358,Allergists
+22359,Gastropubs
+22360,Chimney Sweeps
+22361,Watch Repair
+22362,Wheel & Rim Repair
+22363,Spray Tanning
+22364,Pool Cleaners
+22365,Shades & Blinds
+22366,Tai Chi
+22367,Pediatricians
+22368,Religious Schools
+22369,Garage Door Services
+22370,Pest Control
+22371,Retirement Homes
+22372,Food Banks
+22373,Magicians
+22374,Massage Therapy
+22375,Vape Shops
+22376,Russian
+22377,Diagnostic Services
+22378,Diagnostic Imaging
+22379,Radiologists
+22380,Laboratory Testing
+22381,Commercial Real Estate
+22382,Ski Resorts
+22383,Home Theatre Installation
+22384,Golf Equipment
+22385,Paintball
+22386,Bespoke Clothing
+22387,Pretzels
+22388,Home Health Care
+22389,Pediatric Dentists
+22390,Farmers Market
+22391,Airlines
+22392,Firewood
+22393,Pressure Washers
+22394,Pool & Hot Tub Service
+22395,Insulation Installation
+22396,Horse Racing
+22397,Business Law
+22398,Bankruptcy Law
+22399,Roofing
+22400,Water Delivery
+22401,Utilities
+22402,Fences & Gates
+22403,Playgrounds
+22404,Shaved Ice
+22405,Personal Injury Law
+22406,Ticket Sales
+22407,Insurance
+22408,Diving
+22409,Urologists
+22410,Neurologist
+22411,Window Washing
+22412,Psychiatrists
+22413,Rheumatologists
+22414,Scuba Diving
+22415,Endodontists
+22416,Arabian
+22417,Test Preparation
+22418,Auto Customization
+22419,Laser Tag
+22420,Seafood Markets
+22421,Flea Markets
+22422,RV Rental
+22423,Departments of Motor Vehicles
+22424,Recycling Center
+22425,Home Window Tinting
+22426,RV Dealers
+22427,Gelato
+22428,Halal
+22429,Real Estate Agents
+22430,Dim Sum
+22431,Painters
+22432,Gastroenterologist
+22433,Driving Schools
+22434,Damage Restoration
+22435,Hats
+22436,Archery
+22437,Home Inspectors
+22438,Mountain Biking
+22439,Propane
+22440,Handyman
+22441,Advertising
+22442,Rafting/Kayaking
+22443,Vacation Rentals
+22444,Shared Office Spaces
+22445,Orthotics
+22446,Nutritionists
+22447,Anesthesiologists
+22448,Casinos
+22449,Embroidery & Crochet
+22450,DUI Law
+22451,Web Design
+22452,Tutoring Centers
+22453,Flight Instruction
+22454,Hot Air Balloons
+22455,Flowers
+22456,Officiants
+22457,Cabinetry
+22458,Cosmetology Schools
+22459,Mongolian
+22460,Massage Schools
+22461,Permanent Makeup
+22462,Marketing
+22463,Criminal Defense Law
+22464,Endocrinologists
+22465,Aquariums
+22466,Psychics & Astrologers
+22467,Rehabilitation Center
+22468,Junk Removal & Hauling
+22469,Boot Camps
+22470,Pharmacy
+22471,Oncologist
+22472,Smog Check Stations
+22473,Office Cleaning
+22474,Motorcycle Rental
+22475,Filipino
+22476,Glass & Mirrors
+22477,Metal Fabricators
+22478,Bartending Schools
+22479,Hostels
+22480,Butcher
+22481,Real Estate Law
+22482,RV Repair
+22483,Horse Boarding
+22484,Surgeons
+22485,Art Classes
+22486,Hindu Temples
+22487,Audiologist
+22488,Videographers
+22489,Video/Film Production
+22490,Argentine
+22491,Nanny Services
+22492,Trophy Shops
+22493,Cantonese
+22494,Street Vendors
+22495,Food Trucks
+22496,Photo Booth Rentals
+22497,Belgian
+22498,Cambodian
+22499,Hungarian
+22500,Szechuan
+22501,Wineries
+22502,Delicatessen
+22503,Pasta Shops
+22504,Aquarium Services
+22505,Plus Size Fashion
+22506,Rugs
+22507,Basque
+22508,Fireworks
+22509,Personal Shopping
+22510,Himalayan/Nepalese
+22511,Moroccan
+22512,Falafel
+22513,African
+22514,Educational Services
+22515,Indonesian
+22516,Turkish
+22517,Afghan
+22518,Employment Law
+22519,CPR Classes
+22520,Herbs & Spices
+22521,Brewing Supplies
+22522,Door Sales/Installation
+22523,Fire Protection Services
+22524,Cultural Center
+22525,Irrigation
+22526,Boxing
+22527,Naturopathic/Holistic
+22528,Soccer
+22529,Boat Repair
+22530,Fishing
+22531,Home Organization
+22532,Food Stands
+22533,CSA
+22534,Modern European
+22535,Musical Instrument Services
+22536,Piano Services
+22537,General Litigation
+22538,Lakes
+22539,Boat Charters
+22540,Auction Houses
+22541,Talent Agencies
+22542,Hearing Aid Providers
+22543,High Fidelity Audio Equipment
+22544,Boat Dealers
+22545,Masonry/Concrete
+22546,Drywall Installation & Repair
+22547,Golf Equipment Shops
+22548,Bail Bondsmen
+22549,Powder Coating
+22550,Irish Pub
+22551,Check Cashing/Pay-day Loans
+22552,Mailbox Centers
+22553,Investing
+22554,Trains
+22555,Skydiving
+22556,Blow Dry/Out Services
+22557,Currency Exchange
+22558,Brazilian
+22559,Guest Houses
+22560,Personal Chefs
+22561,Laotian
+22562,Dog Parks
+22563,Piano Bars
+22564,Coffeeshops
+22565,Police Departments
+22566,Buses
+22567,Hot Pot
+22568,Skate Parks
+22569,Burmese
+22570,Disc Golf
+22571,Live/Raw Food
+22572,Legal Services
+22573,Refinishing Services
+22574,Private Tutors
+22575,Prosthetics
+22576,Health Retreats
+22577,Lactation Services
+22578,Tanning Beds
+22579,Recording & Rehearsal Studios
+22580,Immigration Law
+22581,Septic Services
+22582,Auto Loan Providers
+22583,Courthouses
+22584,Brasseries
+22585,Clowns
+22586,Special Education
+22587,Shredding Services
+22588,Bubble Tea
+22589,Bartenders
+22590,Musicians
+22591,Singaporean
+22592,Cycling Classes
+22593,Champagne Bars
+22594,Coffee & Tea Supplies
+22595,Colombian
+22596,Car Share Services
+22597,Cafeteria
+22598,Scandinavian
+22599,Canadian (New)
+22600,Poutineries
+22601,Organic Stores
+22602,Used Bookstore
+22603,Haitian
+22604,Language Schools
+22605,Austrian
+22606,Hypnosis/Hypnotherapy
+22607,Rock Climbing
+22608,Food Court
+22609,Data Recovery
+22610,Dominican
+22611,Event Photography
+22612,Motorcycle Gear
+22613,Scottish
+22614,Patisserie/Cake Shop
+22615,Pub Food
+22616,Face Painting
+22617,Ramen
+22618,Barre Classes
+22619,Street Art
+22620,Private Investigation
+22621,Doulas
+22622,Cooking Classes
+22623,Gold Buyers
+22624,Mosques
+22625,Cannabis Clinics
+22626,Architects
+22627,Day Camps
+22628,Mobile Phone Repair
+22629,Surf Shop
+22630,Shutters
+22631,Hospice
+22632,Security Services
+22633,Party Bus Rentals
+22634,Bangladeshi
+22635,Australian
+22636,Rolfing
+22637,Ukrainian
+22638,Bus Tours
+22639,Beer Garden
+22640,Baden
+22641,Beer Gardens
+22642,International
+22643,Beverage Store
+22644,Ethnic Grocery
+22645,Kebab
+22646,Serbo Croatian
+22647,Matchmakers
+22648,Saunas
+22649,Public Plazas
+22650,Castles
+22651,Paddleboarding
+22652,Vacation Rental Agents
+22653,Furniture Repair
+22654,Oriental
+22655,Shanghainese
+22656,Distilleries
+22657,Venezuelan
+22658,Psychologists
+22659,Trampoline Parks
+22660,Bavarian
+22661,Airport Lounges
+22662,Batting Cages
+22663,Medical Transportation
+22664,Food Tours
+22665,Iberian
+22666,Trinidadian
+22667,Firearm Training
+22668,Bike Sharing
+22669,Osteopathic Physicians
+22670,Yelp Events
+22671,Curry Sausage
+22672,Challenge Courses
+22673,Hang Gliding
+22674,Egyptian
+22675,College Counseling
+22676,Pulmonologist
+22677,Sugaring
+22678,Home Staging
+22679,Donairs
+22680,General Festivals
+22681,Wine Tours
+22682,Czech
+22683,Eastern European
+22684,Meditation Centers
+22685,Walking Tours
+22686,Basketball Courts
+22687,Eastern German
+22688,Christmas Markets
+22689,Wok
+22690,Swiss Food
+22691,Valet Services
+22692,Walk-in Clinics
+22693,Pole Dancing Classes
+22694,Uzbek
+22695,Lice Services
+22696,Customized Merchandise
+22697,Gutter Services
+22698,Pita
+22699,Teppanyaki
+22700,Pop-up Shops
+22701,Cabaret
+22702,Izakaya
