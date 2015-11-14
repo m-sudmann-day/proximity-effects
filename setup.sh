@@ -10,7 +10,7 @@ pswd=`grep dbpswd service.conf | cut -f2 -d' '`
 target_dir='/var/www/html'
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 db_dir="$current_dir/db"
-data_dir="current_dir/data"
+data_dir="$current_dir/data"
 
 case $cmd in
 
