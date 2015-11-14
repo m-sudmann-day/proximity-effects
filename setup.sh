@@ -19,6 +19,7 @@ case $cmd in
 install)
 	echo "Installing..."
 	pwd
+        sudo chmod 777 $target_dir
 	echo "  Creating database schema..."
 	mysql -u $user -p$pswd < $db_dir/schema.sql
 	echo "  Loading data..."

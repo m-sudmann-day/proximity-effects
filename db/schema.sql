@@ -1,4 +1,7 @@
 
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root';
+
 DROP DATABASE IF EXISTS proximity_effects;
 
 CREATE DATABASE proximity_effects;
