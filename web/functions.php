@@ -7,7 +7,8 @@ function connect_to_db() {
     $dbname = "ecommerce";
 
     $link = mysql_connect($host,$dbuser,$dbpass);
-
+    mysql_select_db($dbname,$line);
+	
     if (!$link) {
         die('Could not connect: ' . mysql_error());
     }   

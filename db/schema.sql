@@ -27,11 +27,6 @@ CREATE TABLE Business(
     FOREIGN KEY (AreaID) REFERENCES Area(ID) ON DELETE RESTRICT
 );
 
--- The application filters businesses by area.
-CREATE INDEX IDX_Business_AreaID
-ON Business (AreaID)
-;
-
 CREATE TABLE Category(
 	ID bigint NOT NULL,
 	Name varchar(100) NOT NULL,
@@ -44,12 +39,6 @@ CREATE TABLE BusinessCategory(
     FOREIGN KEY (BusinessID) REFERENCES Business(ID) ON DELETE RESTRICT,
     FOREIGN KEY (CategoryID) REFERENCES Category(ID) ON DELETE RESTRICT
 );
-
--- The application looks up all business categories for a business, or
--- for multiple businesses at once.
-CREATE INDEX IDX_BusinessCategory_BusinessID
-ON BusinessCategory (BusinessID)
-;
 
 CREATE TABLE User(
 	ID bigint NOT NULL,
@@ -65,4 +54,12 @@ CREATE TABLE Review(
 	Stars float NOT NULL,
 	FOREIGN KEY (UserID) REFERENCES User(ID) ON DELETE RESTRICT,
 	FOREIGN KEY (BusinessID) REFERENCES Business(ID) ON DELETE RESTRICT
+);
+
+CREATE TABLE AreaCategory(
+	AreaID int NOT NULL,
+	CategoryID bigint NOT NULL,
+    BusinessCount int NOT NULL,
+    FOREIGN KEY (AreaID) REFERENCES Area(ID) ON DELETE RESTRICT,
+    FOREIGN KEY (CategoryID) REFERENCES Category(ID) ON DELETE RESTRICT
 );

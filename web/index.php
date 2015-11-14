@@ -48,7 +48,7 @@ function show_content(optionsId) {
 }
 </script>
 <body>
-	<div id="header"><h1>Proximity Effects and Customer Sentiment</h1></div>
+	<div id="header"><h1>Proximity Effects on Customer Sentiment</h1></div>
 
 	<div id="menu">
 		<a id="home_link" href="#" class="active" onclick="show_content('home'); return false;">Home</a> &middot;
@@ -59,31 +59,31 @@ function show_content(optionsId) {
 	<div id="main">
 
 		<div id="home">
-		<h2>Home</h2>
-		<br /><br />	<h3>The challenge</h3>
+			<h2>Home</h2>
+			<h3>The challenge</h3>
 			
-<p> Do something awesome.</p>
+			<p>Do something awesome.</p>
 			
-
-
-<br /> <br />
-
-			
+		
 			<h3>The solution</h3>
 						
 			<p>Be awesome.</p>
-
-
-
-
-						
 		</div>	
 
-                <?php include 'data_and_analysis.php' ?>
+                <?php include 'functions.php' ?>
+				<?php include 'data_and_analysis.php' ?>
 	
 	</div>
 
-	<div id="footer">Project team: Group 1</div>
+<?php
+	connect_to_db();
+	$query = "SELECT * FROM Area";
+	$title = "AREAS";
+	query_and_print_table($query,$title);
+	echo "";
+?>
+
+	<div id="footer">Project team: Nicholas Halliwell, Denitsa Panova, Matthew Sudmann-Day</div>
 
 </body>
 </html>

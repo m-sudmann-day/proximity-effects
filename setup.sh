@@ -8,23 +8,25 @@ user=`grep dbuser service.conf | cut -f2 -d' '`
 pswd=`grep dbpswd service.conf | cut -f2 -d' '`
 
 target_dir='/var/www/html'
-#target_dir=$HOME/public_html
+current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+db_dir="$current_dir/db"
 
-
+echo $current_dir
+echo $db_dir
 
 case $cmd in
 
 install)
 	echo "Installing..."
 	pwd
-	echo "  Creating database schema"
-	mysql -u $user -p$pswd < db/schema.sql
+	echo "  Creating database schema..."
+	mysql -u $user -p$pswd < $db_dir/schema.sql
 	echo "  Loading data..."
-	mysql -u $user -p$pswd < db/load_data.sql
-	echo "  Cleaning data..."
-	mysql -u $user -p$pswd < db/cleanup_data.sql
+	mysql -u $user -p$pswd < $db_dir/load.sql
+        echo "  Creating indexes..."
+        mysql -u $user -p$pswd < $db_dir/indexes.sql
 	echo "  Creating routines..."
-	mysql -u $user -p$pswd < db/routines.sql
+	mysql -u $user -p$pswd < $db_dir/routines.sql
 
 	mkdir -p "$target_dir/MyApp"
 	cp -rf web/* "$target_dir/MyApp"
