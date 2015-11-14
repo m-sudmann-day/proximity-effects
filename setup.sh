@@ -18,8 +18,11 @@ install)
 	echo "Installing..."
 	pwd
 	sudo chmod 777 $db_dir
+        sudo chmod 777 $db_dir/*
 	sudo chmod 777 $data_dir
+        sudo chmod 777 $data_dir/*
         sudo chmod 777 $target_dir
+        sudo chmod 777 $target_dir/*
 	echo "  Creating database schema..."
 	mysql -u $user -p$pswd < $db_dir/schema.sql
 	echo "  Loading data..."
