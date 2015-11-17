@@ -1,6 +1,4 @@
 
-setwd("C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\data")
-
 # Load user and review data.
 user <- read.csv("user.csv")
 review <- read.csv("review.csv")
