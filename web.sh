@@ -1,0 +1,2 @@
+bash setup.sh webonly
+

@@ -11,9 +11,3 @@ ON Business (AreaID)
 CREATE INDEX IDX_BusinessCategory_BusinessID
 ON BusinessCategory (BusinessID)
 ;
-
--- The application looks up all business categories for a business, or
--- for multiple businesses at once.
-CREATE INDEX IDX_AreaCategory_AreaID
-ON AreaCategory (AreaID)
-;

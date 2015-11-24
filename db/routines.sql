@@ -22,9 +22,9 @@ BEGIN
 END $$
 DELIMITER ;
 
-DROP PROCEDURE IF EXISTS GetBusinessesForArea;
+DROP PROCEDURE IF EXISTS GetBusinesses;
 DELIMITER $$
-CREATE PROCEDURE GetBusinessesForArea(_AreaID int, _CategoryID1 int,
+CREATE PROCEDURE GetBusinesses(_AreaID int, _CategoryID1 int,
 	_CategoryID2 int, _CategoryID3 int, _CategoryID4 int, _CategoryID5 int,
     _MaxRows int)
 BEGIN
@@ -37,23 +37,5 @@ BEGIN
 END $$
 DELIMITER ;
 
-DROP PROCEDURE IF EXISTS GetBusinessCategoriesForArea;
-DELIMITER $$
-CREATE PROCEDURE GetBusinessCategoriesForArea(_AreaID int)
-BEGIN
-	SELECT *
-	FROM AreaCategory ac
-    WHERE AreaID = _AreaID;
-END $$
-DELIMITER ;
 
-DROP PROCEDURE IF EXISTS GetReviewsForArea;
-DELIMITER $$
-CREATE PROCEDURE GetReviewsForArea(_AreaID int)
-BEGIN
-	SELECT r.*
-	FROM Review r
-    INNER JOIN Business b ON r.BusinessID = b.ID
-    WHERE b.Area = _AreaID;
-END $$
-DELIMITER ;
+call proximity_effects.GetBusinesses(3,22169, NULL, NULL, NULL, NULL, 10000);

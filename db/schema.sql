@@ -1,7 +1,4 @@
 
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root';
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root';
-
 DROP DATABASE IF EXISTS proximity_effects;
 
 CREATE DATABASE proximity_effects;
@@ -25,7 +22,13 @@ CREATE TABLE Business(
 	ReviewCount int NOT NULL,
 	YelpStars float NOT NULL,
     AreaID int NOT NULL,
-    Density int NULL,
+    Density int NOT NULL,
+    Stars1Mean double NOT NULL,
+    Stars2Mean double NOT NULL,
+    Stars3Mean double NOT NULL,
+    Stars1StDev double NOT NULL,
+    Stars2StDev double NOT NULL,
+    Stars3StDev double NOT NULL,
 	PRIMARY KEY (ID),
     FOREIGN KEY (AreaID) REFERENCES Area(ID) ON DELETE RESTRICT
 );
@@ -39,7 +42,8 @@ CREATE TABLE Category(
 CREATE TABLE BusinessCategory(
 	BusinessID bigint NOT NULL,
 	CategoryID bigint NOT NULL,
-    FOREIGN KEY (BusinessID) REFERENCES Business(ID) ON DELETE RESTRICT,
+--  The following foreign key will be added after the data is loaded.
+--  FOREIGN KEY (BusinessID) REFERENCES Business(ID) ON DELETE RESTRICT,
     FOREIGN KEY (CategoryID) REFERENCES Category(ID) ON DELETE RESTRICT
 );
 
@@ -59,10 +63,3 @@ CREATE TABLE Review(
 	FOREIGN KEY (BusinessID) REFERENCES Business(ID) ON DELETE RESTRICT
 );
 
-CREATE TABLE AreaCategory(
-	AreaID int NOT NULL,
-	CategoryID bigint NOT NULL,
-    BusinessCount int NOT NULL,
-    FOREIGN KEY (AreaID) REFERENCES Area(ID) ON DELETE RESTRICT,
-    FOREIGN KEY (CategoryID) REFERENCES Category(ID) ON DELETE RESTRICT
-);

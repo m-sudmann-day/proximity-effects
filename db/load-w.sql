@@ -1,13 +1,13 @@
 
 USE proximity_effects;
 
-LOAD DATA INFILE 'C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\data\\user.csv'
-INTO TABLE User
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 LINES
-;
+-- LOAD DATA INFILE 'C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\data\\user.csv'
+-- INTO TABLE User
+-- FIELDS TERMINATED BY ','
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES
+-- ;
 
 LOAD DATA INFILE 'C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\data\\area.csv'
 INTO TABLE Area
@@ -17,21 +17,21 @@ LINES TERMINATED BY '\n'
 IGNORE 1 LINES
 ;
 
-LOAD DATA INFILE 'C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\data\\business.csv'
+LOAD DATA INFILE 'C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\data\\business3.csv'
 INTO TABLE Business
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
+LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
 ;
 
-LOAD DATA INFILE 'C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\data\\review.csv'
-INTO TABLE Review
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 LINES
-;
+-- LOAD DATA INFILE 'C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\data\\review.csv'
+-- INTO TABLE Review
+-- FIELDS TERMINATED BY ','
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES
+-- ;
 
 LOAD DATA INFILE 'C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\data\\category.csv'
 INTO TABLE Category
@@ -49,11 +49,11 @@ LINES TERMINATED BY '\n'
 IGNORE 1 LINES
 ;
 
-INSERT INTO AreaCategory
-(AreaID, CategoryID, BusinessCount)
-SELECT b.AreaID, c.ID AS CategoryID, COUNT(*) AS BusinessCount
-FROM Category c
-INNER JOIN BusinessCategory bc ON bc.CategoryID = c.id
-INNER JOIN Business b ON bc.BusinessID = b.id
-GROUP BY b.AreaID, c.ID
-;
+-- Delete BusinessCategories for businesses that were not loaded because they had no reviews.
+DELETE FROM BusinessCategory
+WHERE BusinessID NOT IN
+	(SELECT ID FROM Business);
+
+-- Only after the previous line of cleanup can we now apply a foreign key.
+ALTER TABLE BusinessCategory
+ADD FOREIGN KEY (BusinessID) REFERENCES Business(ID) ON DELETE RESTRICT;
