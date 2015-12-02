@@ -8,32 +8,21 @@ if (is.win) {
   require(RMySQL)
   require(fossil)
 } else {
-  lib.loc = ifelse(is.win, "", "/home/ubuntu/projects/Rlibs")
+  lib.loc = "/home/ubuntu/projects/Rlibs"
   require(ggplot2, lib.loc=lib.loc)
   require(RMySQL, lib.loc=lib.loc)
   require(fossil, lib.loc=lib.loc)
   require(ggmap, lib.loc=lib.loc)
 }
 
-mysql.user      <- "root"
-mysql.pwd       <- "root"
-mysql.server    <- "localhost"
-mysql.database  <- "proximity_effects"
-args            <- commandArgs(TRUE)
-charts.root     <- args[1]
-ts              <- args[2]
-area.id         <- args[3]
-category.id     <- args[4]
-
-# if (is.win) {
-#   charts.root     <- "C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\web\\charts\\"
-# } else {
-#   charts.root     <- "/var/www/html/MyApp/charts"
-# }
-# ts <- "blah"
-
-dir <- paste0(charts.root, ts, sep="")
-dir.create(dir)
+mysql.user           <- "root"
+mysql.pwd            <- "root"
+mysql.server         <- "localhost"
+mysql.database       <- "proximity_effects"
+args                 <- commandArgs(TRUE)
+charts.partial.path  <- args[1]
+area.id              <- args[2]
+category.id          <- args[3]
 
 fetch.data.from.sql <- function(sql)
 {
@@ -42,12 +31,12 @@ fetch.data.from.sql <- function(sql)
   results <- fetch(rs, n=-1)
   dbClearResult(rs) -> sink
   dbDisconnect(conn) -> sink
-  return(results) 
+  return(results)
 }
 
 load.categories <- function()
 {
-  return(fetch.data.from.sql("call GetAllActiveCategories();"))
+  return(fetch.data.from.sql("call GetAllCategories();"))
 }
 
 load.data <- function(area, cat)
@@ -228,7 +217,7 @@ extract.regression.info <- function(reg)
   return(c(reg$coef[2], t))
 }
 
-display <-function(B,x,y,run.reg,caption,index)
+display <-function(B, x, y, run.reg, caption, index)
 {
   colnames(B)[colnames(B)==x] <- "X"
   colnames(B)[colnames(B)==y] <- "Y"
@@ -258,7 +247,7 @@ display <-function(B,x,y,run.reg,caption,index)
   }
   else
   {
-    filename = paste0(dir, "/chart", index, ".png", sep="")
+    filename = paste0(charts.partial.path, ".", index, ".png", sep="")
     ggsave(filename=filename, width=8, height=6, units="in", dpi=72, plot=plot)
   }
 }
@@ -302,19 +291,17 @@ map <- function(data)
 
 
 
-area.id=4;category.id=21984
-B<-process.one.B(area.id,category.id)
+#area.id=4;category.id=21984
+B <- process.one.B(area.id,category.id)
 
-
-
-display(B,"Dist","YS1",FALSE,"Yelp Business Ratings vs. Distance",1)
-display(B,"Dist","YSD1",FALSE,"Difference Between Ratings vs. Distance",2)
-display(B,"Dist","MLD1",TRUE,"Multinomial Logit Rating vs. Distance",3)
-display(B,"Dist","MLD3",TRUE,"Multinomial Logit Rating vs. Distance",4)
-#display(B,"Dist","STD1",TRUE,"Multinomial Logit Rating vs. Distance")
-#display(B,"Dist","STD3",TRUE,"Multinomial Logit Rating vs. Distance")
-display(B,"Dist","ML1.sd",TRUE,"Multinomial Logit Rating vs. Distance",5)
-#display(B,"Dist","ML3.sd",TRUE,"Multinomial Logit Rating vs. Distance")
-#display(B,"Dist","ST1.sd",TRUE,"Multinomial Logit Rating vs. Distance")
-#display(B,"Dist","ST3.sd",TRUE,"Multinomial Logit Rating vs. Distance")
+display(B,"Dist","YS1",FALSE,"Yelp Business Ratings vs. Distance",1) -> sink
+display(B,"Dist","YSD1",FALSE,"Difference Between Ratings vs. Distance",2) -> sink
+display(B,"Dist","MLD1",TRUE,"Multinomial Logit Rating vs. Distance",3) -> sink
+display(B,"Dist","MLD3",TRUE,"Multinomial Logit Rating vs. Distance",4) -> sink
+#display(B,"Dist","STD1",TRUE,"Multinomial Logit Rating vs. Distance") -> sink
+#display(B,"Dist","STD3",TRUE,"Multinomial Logit Rating vs. Distance") -> sink
+display(B,"Dist","ML1.sd",TRUE,"Multinomial Logit Rating vs. Distance",5) -> sink
+#display(B,"Dist","ML3.sd",TRUE,"Multinomial Logit Rating vs. Distance") -> sink
+#display(B,"Dist","ST1.sd",TRUE,"Multinomial Logit Rating vs. Distance") -> sink
+#display(B,"Dist","ST3.sd",TRUE,"Multinomial Logit Rating vs. Distance") -> sink
 

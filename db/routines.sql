@@ -12,13 +12,12 @@ BEGIN
 END $$
 DELIMITER ;
 
-DROP PROCEDURE IF EXISTS GetAllActiveCategories;
+DROP PROCEDURE IF EXISTS GetAllCategories;
 DELIMITER $$
-CREATE PROCEDURE GetAllActiveCategories()
+CREATE PROCEDURE GetAllCategories()
 BEGIN
 	SELECT *
     FROM Category
-    WHERE IsActive = TRUE
     ORDER BY Name;
 END $$
 DELIMITER ;

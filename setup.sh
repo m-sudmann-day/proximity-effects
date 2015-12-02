@@ -37,13 +37,12 @@ install)
 	mkdir /home/ubuntu/projects/Rlibs
 	chmod 777 /home/ubuntu/projects/Rlibs
 	echo R_LIBS=/home/ubuntu/projects/Rlibs > ~/.Renviron 
+	echo R_LIBS_USER=/home/ubuntu/projects/Rlibs > ~/.Renviron 
 
 	# to avoid being asked every time for a mirror when installing packages, you can set it up this way, of course you can use any CRAN mirror, not the UK one I used
 	echo 'local({r <- getOption("repos"); r["CRAN"] <- "https://cran.rstudio.com"; options(repos=r)})' > ~/.Rprofile
 	
-	#mkdir Rpackages
-	#chmod 777 Rpackages
-	#sudo Rscript --vanilla analysis/setup.R
+	sudo Rscript --vanilla setup.R
 
 	echo "  Creating database schema..."
 	mysql -u $user -p$pswd < $db_dir/schema.sql
