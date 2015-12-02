@@ -49,6 +49,8 @@ LINES TERMINATED BY '\n'
 IGNORE 1 LINES
 ;
 
+SET SQL_SAFE_UPDATES = 0;
+
 -- Delete BusinessCategories for businesses that were not loaded because they had no reviews.
 DELETE FROM BusinessCategory
 WHERE BusinessID NOT IN

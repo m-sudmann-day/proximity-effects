@@ -36,6 +36,7 @@ CREATE TABLE Business(
 CREATE TABLE Category(
 	ID bigint NOT NULL,
 	Name varchar(100) NOT NULL,
+    IsActive bool NULL,
 	PRIMARY KEY (ID)
 );
 

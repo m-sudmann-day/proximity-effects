@@ -12,30 +12,25 @@ BEGIN
 END $$
 DELIMITER ;
 
-DROP PROCEDURE IF EXISTS GetAllCategories;
+DROP PROCEDURE IF EXISTS GetAllActiveCategories;
 DELIMITER $$
-CREATE PROCEDURE GetAllCategories()
+CREATE PROCEDURE GetAllActiveCategories()
 BEGIN
 	SELECT *
     FROM Category
+    WHERE IsActive = TRUE
     ORDER BY Name;
 END $$
 DELIMITER ;
 
 DROP PROCEDURE IF EXISTS GetBusinesses;
 DELIMITER $$
-CREATE PROCEDURE GetBusinesses(_AreaID int, _CategoryID1 int,
-	_CategoryID2 int, _CategoryID3 int, _CategoryID4 int, _CategoryID5 int,
-    _MaxRows int)
+CREATE PROCEDURE GetBusinesses(_AreaID int, _CategoryID int)
 BEGIN
 	SELECT b.*
 	FROM Business b
     INNER JOIN BusinessCategory bc ON bc.BusinessID = b.ID
     WHERE AreaID = _AreaID
-    AND bc.CategoryID in (_CategoryID1, _CategoryID2, _CategoryID3, _CategoryID4, _CategoryID5)
-    LIMIT _MaxRows;
+    AND bc.CategoryID = _CategoryID;
 END $$
 DELIMITER ;
-
-
-call proximity_effects.GetBusinesses(3,22169, NULL, NULL, NULL, NULL, 10000);

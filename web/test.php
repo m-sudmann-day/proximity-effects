@@ -31,6 +31,7 @@ $selected_agg_alg_id = $_POST["ddlAggAlg"];
 ?>
 
 <script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
 
 <form name="frmMain" method="post" action="test.php">
     
@@ -87,6 +88,8 @@ $selected_agg_alg_id = $_POST["ddlAggAlg"];
 
     <br />
     <br />
+     
+    <table style="width:95%" />
 
     <?php
 
@@ -94,12 +97,24 @@ $selected_agg_alg_id = $_POST["ddlAggAlg"];
     $t = ltrim($t[0] + $t[1]);
 
     /* to see errors add '2>&1' to the string below */
-    $cmd = sprintf("%s %s %s %s %d %d %d %d %d %d %d 2>&1", $rEngine, $rScript, $rCharts,
-        $t, $selected_area_id, $selected_category_id, -1, -1, -1, -1, $selected_user_norm_id);
+    $cmd = sprintf("%s %s %s %s %d %d %d", $rEngine, $rScript, $rCharts, #  >&1 2>&1
+        $t, $selected_area_id, $selected_category_id, $selected_agg_alg_id);
     $result = system($cmd);
 
-    echo ($cmd . "<br />" . $result . "<br />");
-    echo("<img src='charts/" . $t . "/chart1.png' />");
+    #echo ($cmd . "<br />" . $result . "<br />");
+    $dir = $rCharts . $t;
+    $files = scandir($dir, SCANDIR_SORT_ASCENDING);
+
+    foreach($files as $file)
+    {
+        if (strlen($file) > 4)
+        {
+            echo("<tr><td style='width:100%; text-align:center'><img align='middle' border='0' src='charts/" . $t . "/" . $file . "'/></td></tr>");
+        }
+    }
+
     ?>
+
+    </table>
 
 </form>
