@@ -248,7 +248,7 @@ display <-function(B, x, y, run.reg, caption, index)
   else
   {
     filename = paste0(charts.partial.path, ".", index, ".png", sep="")
-    ggsave(filename=filename, width=8, height=6, units="in", dpi=72, plot=plot)
+    ggsave(filename=filename, width=8, height=6, units="in", dpi=100, plot=plot)
   }
 }
 

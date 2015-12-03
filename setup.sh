@@ -22,7 +22,9 @@ install)
 	sudo chmod 777 $data_dir
 	sudo chmod 777 $data_dir/*
 	sudo chmod 777 $target_dir
+	sudo mkdir $target_dir/MyApp/charts
 	sudo chmod 777 $target_dir/*
+	sudo chmod 777 $target_dir/MyApp/charts
 
 	### Installing the most recent version of R
 
@@ -66,15 +68,6 @@ uninstall)
 	rm -rf "target_dir/MyApp"
 
 	echo "done!"
-	;;
-
-run)
-	echo "Running"
-	R CMD BATCH analysis/analysis.R 
-	cat analysis.Rout
-	rm analysis.Rout
-	cp web/categories_network.png "$target_dir/MyApp"
-
 	;;
 
 *)

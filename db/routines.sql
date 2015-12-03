@@ -7,7 +7,7 @@ CREATE PROCEDURE GetAllAreas()
 BEGIN
 	SELECT *
     FROM Area
-    WHERE IsActive=1
+    WHERE IsActive = TRUE
     ORDER BY Name;
 END $$
 DELIMITER ;

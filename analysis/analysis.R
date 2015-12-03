@@ -1,120 +1,311 @@
-library(RMySQL)
+#rm(list=ls(all=TRUE))
 
-#Connection to SQL
-db = dbConnect(MySQL(), user='root', password='root' , dbname='ecommerce', host='localhost')
+is.win = (Sys.info()['sysname'] == "Windows")
 
-##### GENERATING THE CATEGORIES MAP
+if (is.win) {
+  require(ggplot2)
+  require(ggmap)
+  require(RMySQL)
+  require(fossil)
+} else {
+  lib.loc = "/home/ubuntu/projects/Rlibs"
+  require(ggplot2, lib.loc=lib.loc)
+  require(RMySQL, lib.loc=lib.loc)
+  require(fossil, lib.loc=lib.loc)
+  require(ggmap, lib.loc=lib.loc)
+}
 
-library(igraph)
+mysql.user           <- "root"
+mysql.pwd            <- "root"
+mysql.server         <- "localhost"
+mysql.database       <- "proximity_effects"
+args                 <- commandArgs(TRUE)
+charts.partial.path  <- args[1]
+area.id              <- args[2]
+category.id          <- args[3]
 
-# Import data
+fetch.data.from.sql <- function(sql)
+{
+  conn <- dbConnect(MySQL(), user=mysql.user, password=mysql.pwd, host=mysql.server, dbname=mysql.database)
+  rs <- dbSendQuery(conn, sql)
+  results <- fetch(rs, n=-1)
+  dbClearResult(rs) -> sink
+  dbDisconnect(conn) -> sink
+  return(results)
+}
 
-result = dbSendQuery(db, "SELECT C1.CategoryName as Cat1, 
-       		                C2.CategoryName as Cat2,
-       		                Count(DISTINCT O1.OrderID) as Weight
-			                    FROM products P1
-       		                JOIN products P2
-         	                ON P1.ProductID != P2.ProductID 
-        	                JOIN categories C1 on P1.CategoryID=C1.CategoryID 
-        	                JOIN categories C2 on P2.CategoryID=C2.CategoryID
-       		                LEFT JOIN order_details O1
-                          INNER JOIN order_details O2
-                          ON O1.OrderID = O2.OrderID
-         	                ON O1.ProductID = P1.ProductId
-                          AND O2.ProductID = P2.ProductID 
-  			                  WHERE P1.CategoryID > P2.CategoryID          
-			                    GROUP  BY P1.CategoryID, P2.CategoryID
-			                    ORDER BY Weight DESC")
-relations = fetch(result, n=-1)
-colnames(relations) = c("from","to","weight")
+load.categories <- function()
+{
+  return(fetch.data.from.sql("call GetAllCategories();"))
+}
 
-result = dbSendQuery(db, "SELECT C1.CategoryName, SUM(O1.UnitPrice*O1.Quantity) as Revenue
-                          FROM products P1
-                          JOIN categories C1
-                          ON P1.CategoryID= C1.CategoryID
-                          LEFT JOIN ecommerce.order_details O1
-                          ON O1.ProductID = P1.ProductId
-                          GROUP BY CategoryName
-                          ORDER BY Revenue DESC")
-totalrevenue = fetch(result, n=-1)
+load.data <- function(area, cat)
+{
+  sql <- paste0("call GetBusinesses(", area, ", ", cat, ");")
+  B <- fetch.data.from.sql(sql)
 
-# Load (DIRECTED) graph from data frame 
-g <- graph.data.frame(relations, directed=FALSE)
+  B$Stars3Mean <- NULL
+  B$Stars3StDev <- NULL
+  colnames(B)[colnames(B)=="YelpStars"] <- "YS"
+  colnames(B)[colnames(B)=="Stars1Mean"] <- "ST"
+  colnames(B)[colnames(B)=="Stars1StDev"] <- "ST.sd"
+  colnames(B)[colnames(B)=="Stars2Mean"] <- "ML"
+  colnames(B)[colnames(B)=="Stars2StDev"] <- "ML.sd"
 
-# Define size of nodes
-node.size<-setNames(totalrevenue$Revenue,totalrevenue$CategoryName)
-names <-as.vector(totalrevenue$CategoryName)
+  return(B)
+}
 
-# Plot and save graph
-png("web/categories_network.png")
-plot(g, vertex.label = names,
-     vertex.shape="circle",
-     vertex.color="orange",
-     vertex.label.dist=1.2,
-     vertex.size=node.size/10000,
-     edge.width=E(g)$weight/20,
-     vertex.label.cex=1.1,
-     vertex.label.family="Helvetica"
-)
-dev.off()
+calculate.distances <- function(B)
+{
+  N <- nrow(B)
+  D <- earth.dist(matrix(c(B$Longitude, B$Latitude), N, 2), FALSE)
+  for (d in 1:N) { D[d,d] <- NA }
+  return(D)
+}
 
-#### IMPLEMENTATION OF APRIORI ALGORITHM ####
+generate.more.columns <- function(B, D, read.col, write.col.1, write.col.3, write.col.1.diff, write.col.3.diff)
+{
+  read.col <- which(colnames(B)==read.col)
+  write.col.1 <- which(colnames(B)==write.col.1)
+  write.col.3 <- which(colnames(B)==write.col.3)
+  write.col.1.diff <- which(colnames(B)==write.col.1.diff)
+  write.col.3.diff <- which(colnames(B)==write.col.3.diff)
+  N <- nrow(B)
+  
+  for (b1 in 1:N)
+  {
+    v <- D[b1,]
+    #v <- v*B$Density*1000
+    if (sum(!is.na(v)) > 0)
+    {
+      B$Dist[b1] <- closestDist1 <- min(v, na.rm=TRUE)
+      b2 <- which.min(v)
+      rating1 <- B[b1,write.col.1] <- B[b2,read.col]
+      w1 <- (1/closestDist1^2.5)
+      v[b2] <- NA
+    
+      if (N > 2)
+      {
+        closestDist2 <- min(v, na.rm=TRUE)
+        b2 <- which.min(v)
+        rating2 <- B[b2,read.col]
+        w2 <- (1/closestDist2^2.5)
+        v[b2] <- NA
+      }
+      else
+      {
+        rating2 <- 0
+        w2 <- 0
+      }
+      
+      if (N > 3)
+      {
+        closestDist3 <- min(v, na.rm=TRUE)
+        b2 <- which.min(v)
+        rating3 <- B[b2,read.col]
+        w3 <- (1/closestDist3^2.5)
+      }
+      else
+      {
+        rating3 <- 0
+        w3 <- 0
+      }
+      
+      numer <- w1*rating1 + w2*rating2 + w3*rating3
+      denom <- w1+w2+w3
+      if (denom < 1e-3)
+        B[b1,write.col.3] <- NA
+      else
+        B[b1,write.col.3] <- numer/denom
+      
+      B[b1,write.col.1.diff] <- abs(rating1 - B[b1,read.col])
+      B[b1,write.col.3.diff] <- abs(rating3 - B[b1,read.col])
+    }
+  }
+  
+  return(B)
+}
 
-library(arules)
+process <- function()
+{
+  cats <- load.categories()
+  results <- data.frame("Area","Cat","Biz","Rev",
+                        "YS", "YSt", "ST1", "ST1t", "MLD1", "MLD1t", "MLD3", "MLD3t", "ST1.sd", "ST1.sdt", "ML1.sd", "ML1.sdt",
+                        stringsAsFactors=FALSE)
+  
+  B <- generate.more.columns(B, D, "YS", "YS1", "YS3", "YSD1", "YSD3")
+  B <- generate.more.columns(B, D, "ST", "ST1", "ST3", "STD1", "STD3")
+  B <- generate.more.columns(B, D, "ST.sd", "ST1.sd", "ST3.sd", "STD1.sd", "STD3.sd")
+  B <- generate.more.columns(B, D, "ML", "ML1", "ML3", "MLD1", "MLD3")
+  B <- generate.more.columns(B, D, "ML.sd", "ML1.sd", "ML3.sd", "MLD1.sd", "MLD3.sd")
 
-#Run query of Interest
-result = dbSendQuery(db, "select distinct(a.OrderID), b.ProductName , b.ProductID from order_details a join products b on a.ProductID = b.ProductID order by a.OrderID")
-data = fetch(result, n=-1)
+  #cats <-data.frame(1)
+  #cats$ID=c(21984)
 
-#Prepare data for arule fuction
-b<-split(data$ProductName, data$OrderID)
-c<-as(b, "transactions")
+  for (catindex in 1:nrow(cats))
+  {
+    #print(c("CATEGORY ", catindex))
+    for (area in 1:10)
+    {
+      if (!(catindex==70 && area==4))
+      {
+        cat <- cats$ID[catindex]
+        v <- process.one(area,cat)
+        if (!is.null(v))
+        {
+          results <- rbind(results, v)
+        }
+      }
+    }
+  }
+  
+  return(results)
+}
 
-#Finding rules
-rules<-apriori(c, parameter=list(supp=0.002, conf=0.8))
-inspect(rules)
+process.one <- function(area,cat)
+{
+  B <- process.one.B(area, cat)
+  if (nrow(B)>10)
+  {
+    results <- data.frame("Area","Cat","Biz","Rev",
+                          "YS", "YSt", "ST1", "ST1t", "MLD1", "MLD1t", "MLD3", "MLD3t", "ST1.sd", "ST1.sdt", "ML1.sd", "ML1.sdt")
+                          
+    v <- c(area,cat,nrow(B),sum(B$ReviewCount))
+    v <- c(v, extract.regression.info(lm(data=B, formula=YS ~ Dist)))
+    v <- c(v, extract.regression.info(lm(data=B, formula=ST1 ~ Dist)))
+    v <- c(v, extract.regression.info(lm(data=B, formula=MLD1 ~ Dist)))
+    v <- c(v, extract.regression.info(lm(data=B, formula=MLD3 ~ Dist)))
+    v <- c(v, extract.regression.info(lm(data=B, formula=ST1.sd ~ Dist)))
+    v <- c(v, extract.regression.info(lm(data=B, formula=ML1.sd ~ Dist)))
+    v <- c(v, 99999)
+    return (v)
+  }
+  return(NULL)
+}
 
-# Turning output into required form
-d<-as(rules, "data.frame")
-out<-as.data.frame(d[1:20,1])
-colnames(out)<-"Rules"
+process.one.B <- function(area,cat)
+{
+  B <- load.data(area, cat)
+  #print(c(789, cat,area,nrow(B)))
 
-#Exporting SQL table
-dbSendQuery(db,"drop table if exists apriori")
-dbWriteTable(conn = db,name="apriori", value=out, row.names=FALSE)
+  D <- NA
+  if (nrow(B) > 0)
+  {
+    D <- calculate.distances(B)
+   
+    B$YS1 <- B$YS3 <- B$YSD1 <- B$YSD3 <- NA
+    B$ST1 <- B$ST3 <- B$STD1 <- B$STD3 <- B$ST1.sd <- B$ST3.sd <- B$STD1.sd <- B$STD3.sd <- NA
+    B$ML1 <- B$ML3 <- B$MLD1 <- B$MLD3 <- B$ML1.sd <- B$ML3.sd <- B$MLD1.sd <- B$MLD3.sd <- NA
+    
+    B <- generate.more.columns(B, D, "YS", "YS1", "YS3", "YSD1", "YSD3")
+    B <- generate.more.columns(B, D, "ST", "ST1", "ST3", "STD1", "STD3")
+    B <- generate.more.columns(B, D, "ST.sd", "ST1.sd", "ST3.sd", "STD1.sd", "STD3.sd")
+    B <- generate.more.columns(B, D, "ML", "ML1", "ML3", "MLD1", "MLD3")
+    B <- generate.more.columns(B, D, "ML.sd", "ML1.sd", "ML3.sd", "MLD1.sd", "MLD3.sd")
+  }  
+  
+  return(B)
+}
 
-#### IMPLEMENTATION OF LASSO REGRESSION ####
+extract.regression.info <- function(reg)
+{
+  summ <- summary(reg)
+  if (nrow(summ$coefficients) > 1)
+    t <- summ$coefficients[2, "t value"]
+  else
+    t <- 0
 
-#Extract data from data set
-result = dbSendQuery(db, "select * from ProductsVsCustomers_Pivot")
-dataPCsC = fetch(result, n=-1)
-result1 = dbSendQuery(db, "SELECT b.CustomerID Customer, sum(a.Quantity*a.UnitPrice) Amount, count(b.OrderID) N_Orders from order_details a left join orders b on a.OrderID=b.OrderID group by CustomerID order by Amount desc limit 20;")
-dataPVsC = fetch(result1, n=-1)
+  return(c(reg$coef[2], t))
+}
 
-#View(dataPVsC)
-dataPVsC[,1]
-y<-as.matrix(dataPCsC[,3])
-x <- dataPCsC[,c(dataPVsC[,1])] # Using best 20 customers
-row.names(x)<-dataPCsC[,2]
-x[is.na(x)] <- 0.00000000001
-z <- as.matrix(x)
+display <-function(B, x, y, run.reg, caption, xcaption, ycaption, index)
+{
+  colnames(B)[colnames(B)==x] <- "X"
+  colnames(B)[colnames(B)==y] <- "Y"
+  
+  plot <- ggplot(B)
+  plot <- plot + ggtitle(paste0(caption, "  (N=", nrow(B), ")"))
+  #plot <- plot + ylim(0, 10) + xlim(0,2)
+  plot <- plot + geom_point(aes(x=X,y=Y), colour="blue")
+  plot <- plot + geom_abline(intercept=0, slope=0, colour="gray")
+  
+  if (run.reg)
+  {
+    reg <- lm(formula=B$Y ~ B$X)
+    summ <- summary(reg)
+    slope <- summ$coefficients[2, "Estimate"]
+    slope <- sprintf("%.2f", slope)
+    conf <- summ$coefficients[2, "Pr(>|t|)"]
+    conf <- sprintf("%.1f%%", conf*100)
+    xcaption <- paste0(xcaption, "\n(Slope=", slope, ", Confidence=", conf, ")")
+    plot <- plot + geom_abline(intercept=reg$coefficients[1],slope=reg$coefficients[2],colour="red")
+  }
+  
+  plot <- plot + labs(x=xcaption, y=ycaption)
 
-## Lasso Coef using Package
-library(lars)
+  if (index == 0)
+  {
+    return(plot)
+  }
+  else
+  {
+    filename = paste0(charts.partial.path, ".", index, ".png", sep="")
+    ggsave(filename=filename, width=8, height=6, units="in", dpi=100, plot=plot)
+  }
+}
 
-set.seed(1)
-lasso<-lars(log(z),log(y), type = "lasso",trace=TRUE, use.Gram = TRUE)
-cv.lasso<-cv.lars(z,y, type="lasso")
-limit<-min(cv.lasso$cv)+cv.lasso$cv.error[which.min(cv.lasso$cv)]
-s.cv<-cv.lasso$index[min(which(cv.lasso$cv<limit))]
-lasso.coef<-as.data.frame(round(coef(lasso, s = s.cv, mode="fraction")*100,digits = 4))
-colnames(lasso.coef)<-c("Percentage")
-vvv<-cbind(Customer=rownames(lasso.coef),lasso.coef)
-rownames(vvv)<-NULL
-TableFinal<-vvv[order(-vvv$Percentage),]
+map <- function(data)
+{
+  coordinates<-as.numeric(geocode("pittsburgh"))
+  myLocation <- c(lon= round(coordinates[1],2), lat=round(coordinates[2],2))
+  myMap <- get_map(location=myLocation, source="stamen", maptype = "watercolor", crop = F, zoom = 13)
 
-#Exporting SQL table
-dbSendQuery(db,"drop table if exists top_customers")
-dbWriteTable(conn = db,name="top_customers", value=TableFinal, row.names=FALSE)
+  map <- ggmap(myMap, extent = "panel", maprange=FALSE)
+  map <- map + geom_density2d(data = data, aes(x = Longitude, y = Latitude))
+  map <- map + stat_density2d(data = data, aes(x = Longitude, y = Latitude, fill = ..level.., alpha = ..level..), size = 0.01, bins = 16, geom = 'polygon')
+  map <- map + scale_fill_gradient(low = "green", high = "red")
+  map <- map + scale_alpha(range = c(0.00, 0.25), guide = FALSE)
+  map <- map + theme(legend.position = "none", axis.title = element_blank(), text = element_text(size = 12))
+  map <- map + geom_point(aes(x = Longitude, y = Latitude), data = data, alpha = .5, color="black", size = data$Density*3)
+  map
+}
+#options(warn=10)
 
+#results <- process()
+#write.csv(results, "C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\web\\charts\\results8.csv")
 
+# #Restaurants, Phoenix, Highly significant, upward sloping
+# area.id <-7
+# category.id<-21931
+# B<-process.one.B(area.id,category.id)
+# display(B,"Dist","ML1",TRUE,"Multinomial Logit Rating vs. Distance",1)
+# #Pizza, Phoenix, Highly significant, upward sloping
+# area.id <-6
+# category.id<-21954
+# B<-process.one.B(area.id,category.id)
+# display(B,"Dist","ML1.sd",TRUE,"Multinomial Logit Rating vs. Distance",2)
+# #Coffee and Tea, Montreal, Highly significant, upward sloping ML1.sd
+# area.id <-4
+# category.id<-21938
+# B<-process.one.B(area.id,category.id)
+# display(B,"Dist","ML1.sd",TRUE,"Multinomial Logit Rating vs. Distance",3)
+
+#   area.id=7;category.id=21984
+#   charts.partial.path="C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\web\\charts\\chart"
+B <- process.one.B(area.id,category.id)
+
+#   write.csv(B,"new data.csv")
+x.text <- "Distance to Closest Competitor (KM)"
+
+display(B,"Dist","YS1",FALSE,
+        "Yelp Stars vs. Distance",x.text,"Yelp Rating (Stars)",10)
+display(B,"Dist","ML1",FALSE,
+        "Standardized Median Absolute Deviation of Rating\nvs. Distance",x.text,"Standardized MAD Rating",20)
+display(B,"Dist","MLD1",TRUE,
+        "Difference Between Standardized MAD Rating of Closest Competitors\nvs. Distance",x.text,"Standardized MAD Rating Difference",30)
+display(B,"Dist","MLD3",TRUE,
+        "Difference Between Standardized MAD Rating Against 3 Closest Competitors\nvs. Distance","Weighted Distance to 3 Closest Competitors (KM)","Standardized MAD Rating Difference (Against 3 Closest)",40)
+display(B,"Dist","ML1.sd",TRUE,"Standard Deviation of Standardized MAD Ratings
+        vs. Distance",x.text,"Standard Deviation of Standardized MAD Ratings",60)
+display(B,"Dist","STD1.sd",TRUE,
+        "Standard Deviation of Yelp Stars\nvs. Distance",x.text,"Standard Deviation of Yelp Stars",70)

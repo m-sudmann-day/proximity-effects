@@ -13,6 +13,16 @@ body {
 	word-spacing:normal;
 }
 
+input, select {
+	font: 1em Verdana, sans-serif;
+	color: #333333;
+    font-family: 10px Arial, Helvetica, Sans-serif;
+	text-decoration:none;
+    line-height:1.3em;
+	letter-spacing:normal;
+	word-spacing:normal;
+}
+
 .small {
 	font-size: 75%;
 }
@@ -24,16 +34,18 @@ body {
 
 /* Header */
 #header  {
-	margin-top: 15px;
+	/*margin-top: 15px;
     margin-left: 70px;
-	margin-right: 50px;
-	background-image: url("background.png");
+	margin-right: 50px;*/
+    background-color: saddlebrown;
+	/*background-image: url("background.png");*/
 	padding-top: 5px;
 	padding-left: 15px;
 	padding-right: 15px;
 	font-size: 110%;
 	text-align:left;
-	width:1160px;
+	/*width:1160px;*/
+    width:100%;
 	text-align:left;
 	float:center;
        }
@@ -48,18 +60,20 @@ body {
 	}      
 
 #menu {
-    margin-left: 70px;
-	margin-right: 50px;
+    /*margin-left: 70px;
+	margin-right: 50px;*/
 	border-top: 1px solid #1C2A57;
 	border-bottom: 1px solid #1C2A57;
-	background: #d7632f;
+    background-color: sandybrown;
+	/*background: #d7632f;*/
 	padding-top: 5px;
 	padding-bottom: 5px;
-	padding-left: 15px;
+	padding-left: 22px;
 	padding-right: 15px;
 	font-size: 110%;
 	text-align:left;
-	width:1160px;
+	/*width:1160px;*/
+
 	text-align:left;
 	float:center;
 }

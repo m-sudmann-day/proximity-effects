@@ -8,6 +8,13 @@
     <RootNamespace>PHPWebProject3</RootNamespace>
     <ProjectTypeGuids>{A0786B88-2ADB-4C21-ABE8-AA2D79766269}</ProjectTypeGuids>
     <AssemblyName>PHPWebProject3</AssemblyName>
+    <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+    <Server>PHPDev</Server>
+    <PublishEvent>None</PublishEvent>
+    <PHPDevAutoPort>True</PHPDevAutoPort>
+    <PHPDevPort>62176</PHPDevPort>
+    <PHPDevHostName>localhost</PHPDevHostName>
+    <IISProjectUrl>http://localhost:62176/</IISProjectUrl>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <IncludeDebugInformation>true</IncludeDebugInformation>
@@ -16,6 +23,18 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="data.php" />
+    <Compile Include="analysis.php" />
+    <Compile Include="index.php" />
     <Compile Include="test.php" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="js\jquery-1.11.3.min.js" />
+    <Content Include="js\navbar.js" />
+    <Content Include="js\New Text Document.txt" />
+    <Content Include="style.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="js\" />
   </ItemGroup>
 </Project>
