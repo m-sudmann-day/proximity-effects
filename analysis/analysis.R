@@ -36,7 +36,13 @@ fetch.data.from.sql <- function(sql)
 
 load.categories <- function()
 {
-  return(fetch.data.from.sql("call GetAllCategories();"))
+  cats <- fetch.data.from.sql("call GetAllCategories();")
+  cats <- cats[cats$ID %in%
+    #c(21931,
+      c(21922,21938,22010,21918,21928,21917,21934,21923,21963,21919,21942,21957,21984,22106,
+      21946,21932,21941,21990,21969,21958,21954,21929,21950,21936,22015,21943,22014,21939,21933,
+      21966,21993,21937,21953,21916,22051,22005,21998,22016,22033,21944,21940,21948,22095,22011,
+      22094,22069,21926,22022,22000,22006,22168,21962,22027,22125,21951,22129,21997,22063,21930),]
 }
 
 load.data <- function(area, cat)
@@ -75,7 +81,6 @@ generate.more.columns <- function(B, D, read.col, write.col.1, write.col.3, writ
   for (b1 in 1:N)
   {
     v <- D[b1,]
-    #v <- v*B$Density*1000
     if (sum(!is.na(v)) > 0)
     {
       B$Dist[b1] <- closestDist1 <- min(v, na.rm=TRUE)
@@ -133,12 +138,12 @@ process <- function()
                         "YS", "YSt", "ST1", "ST1t", "MLD1", "MLD1t", "MLD3", "MLD3t", "ST1.sd", "ST1.sdt", "ML1.sd", "ML1.sdt",
                         stringsAsFactors=FALSE)
   
-  B <- generate.more.columns(B, D, "YS", "YS1", "YS3", "YSD1", "YSD3")
-  B <- generate.more.columns(B, D, "ST", "ST1", "ST3", "STD1", "STD3")
-  B <- generate.more.columns(B, D, "ST.sd", "ST1.sd", "ST3.sd", "STD1.sd", "STD3.sd")
-  B <- generate.more.columns(B, D, "ML", "ML1", "ML3", "MLD1", "MLD3")
-  B <- generate.more.columns(B, D, "ML.sd", "ML1.sd", "ML3.sd", "MLD1.sd", "MLD3.sd")
-
+#   B <- generate.more.columns(B, D, "YS", "YS1", "YS3", "YSD1", "YSD3")
+#   B <- generate.more.columns(B, D, "ST", "ST1", "ST3", "STD1", "STD3")
+#   B <- generate.more.columns(B, D, "ST.sd", "ST1.sd", "ST3.sd", "STD1.sd", "STD3.sd")
+#   B <- generate.more.columns(B, D, "ML", "ML1", "ML3", "MLD1", "MLD3")
+#   B <- generate.more.columns(B, D, "ML.sd", "ML1.sd", "ML3.sd", "MLD1.sd", "MLD3.sd")
+# 
   #cats <-data.frame(1)
   #cats$ID=c(21984)
 
@@ -186,13 +191,13 @@ process.one <- function(area,cat)
 process.one.B <- function(area,cat)
 {
   B <- load.data(area, cat)
-  #print(c(789, cat,area,nrow(B)))
+  #print(c(cat,area,nrow(B)))
 
   D <- NA
   if (nrow(B) > 0)
   {
     D <- calculate.distances(B)
-   
+
     B$YS1 <- B$YS3 <- B$YSD1 <- B$YSD3 <- NA
     B$ST1 <- B$ST3 <- B$STD1 <- B$STD3 <- B$ST1.sd <- B$ST3.sd <- B$STD1.sd <- B$STD3.sd <- NA
     B$ML1 <- B$ML3 <- B$MLD1 <- B$MLD3 <- B$ML1.sd <- B$ML3.sd <- B$MLD1.sd <- B$MLD3.sd <- NA
@@ -202,8 +207,21 @@ process.one.B <- function(area,cat)
     B <- generate.more.columns(B, D, "ST.sd", "ST1.sd", "ST3.sd", "STD1.sd", "STD3.sd")
     B <- generate.more.columns(B, D, "ML", "ML1", "ML3", "MLD1", "MLD3")
     B <- generate.more.columns(B, D, "ML.sd", "ML1.sd", "ML3.sd", "MLD1.sd", "MLD3.sd")
-  }  
-  
+
+    if (area %in% c(1,2,9,10))
+    {
+      B$Density <- 1000
+    }
+    else if (sum(is.null(B$Dist))>0)
+    {
+      B$DistDensity = B$Dist
+    }
+    else
+    {
+      B$DistDensity <- B$Dist * B$Density / 1000
+    }
+  }
+
   return(B)
 }
 
@@ -218,61 +236,76 @@ extract.regression.info <- function(reg)
   return(c(reg$coef[2], t))
 }
 
-display <-function(B, x, y, run.reg, caption, xcaption, ycaption, index)
+display <-function(B, area.id, y, run.reg, caption, xcaption, ycaption, index)
 {
-  colnames(B)[colnames(B)==x] <- "X"
-  colnames(B)[colnames(B)==y] <- "Y"
-  
-  plot <- ggplot(B)
-  plot <- plot + ggtitle(paste0(caption, "  (N=", nrow(B), ")"))
-  #plot <- plot + ylim(0, 10) + xlim(0,2)
-  plot <- plot + geom_point(aes(x=X,y=Y), colour="blue")
-  plot <- plot + geom_abline(intercept=0, slope=0, colour="gray")
-  
-  if (run.reg)
+  if (nrow(B) > 0)
   {
-    reg <- lm(formula=B$Y ~ B$X)
-    summ <- summary(reg)
-    slope <- summ$coefficients[2, "Estimate"]
-    slope <- sprintf("%.2f", slope)
-    conf <- summ$coefficients[2, "Pr(>|t|)"]
-    conf <- sprintf("%.1f%%", conf*100)
-    xcaption <- paste0(xcaption, "\n(Slope=", slope, ", Confidence=", conf, ")")
-    plot <- plot + geom_abline(intercept=reg$coefficients[1],slope=reg$coefficients[2],colour="red")
-  }
+    colnames(B)[colnames(B)==y] <- "Y"
+    plot <- ggplot(B) + theme_bw()
+    plot <- plot + theme(axis.text =  element_text(face = "bold", size = 14))
+    plot <- plot + theme(axis.title =  element_text(face = "bold", size = 14))
+    plot <- plot + theme(plot.title =  element_text(face = "bold", size = 14))
+    plot <- plot + ggtitle(paste0(caption, "  (N=", nrow(B), ")"))
+    #plot <- plot + ylim(0, 10) + xlim(0,2)
+    plot <- plot + geom_point(aes(x=DistDensity,y=Y), colour="blue", size=3)
+    plot <- plot + geom_abline(intercept=0, slope=0, colour="gray", size=1)
+    
+    if (run.reg)
+    {
+     if (area.id %in% c(1,2,9,10)) # no population density information available
+     {
+       reg <- lm(formula=B$Y ~ B$Dist)
+     }
+     else
+     {
+       reg <- lm(formula=B$Y ~ B$DistDensity) # + B$Dist + B$Density)
+     }
+      summ <- summary(reg)
+      #print(summ)
+      slope <- summ$coefficients[2, "Estimate"]
+      slope <- sprintf("%.2f", slope)
+      conf <- summ$coefficients[2, "Pr(>|t|)"]
+      conf <- sprintf("%.1f%%", (1-conf)*100)
+      xcaption <- paste0(xcaption, "\n(Slope=", slope, ", Confidence=", conf, ")")
+      plot <- plot + geom_abline(intercept=reg$coefficients[1],slope=reg$coefficients[2],
+         colour="red",size=1)
+    }
+    
+    plot <- plot + labs(x=xcaption, y=ycaption)
   
-  plot <- plot + labs(x=xcaption, y=ycaption)
-
-  if (index == 0)
-  {
-    return(plot)
-  }
-  else
-  {
-    filename = paste0(charts.partial.path, ".", index, ".png", sep="")
-    ggsave(filename=filename, width=8, height=6, units="in", dpi=100, plot=plot)
+    if (index == 0)
+    {
+      return(plot)
+    }
+    else
+    {
+      filename = paste0(charts.partial.path, ".", index, ".png", sep="")
+      ggsave(filename=filename, width=8, height=6, units="in", dpi=100, plot=plot)
+      return(plot)
+    }
   }
 }
 
-map <- function(data)
-{
-  coordinates<-as.numeric(geocode("pittsburgh"))
-  myLocation <- c(lon= round(coordinates[1],2), lat=round(coordinates[2],2))
-  myMap <- get_map(location=myLocation, source="stamen", maptype = "watercolor", crop = F, zoom = 13)
 
-  map <- ggmap(myMap, extent = "panel", maprange=FALSE)
-  map <- map + geom_density2d(data = data, aes(x = Longitude, y = Latitude))
-  map <- map + stat_density2d(data = data, aes(x = Longitude, y = Latitude, fill = ..level.., alpha = ..level..), size = 0.01, bins = 16, geom = 'polygon')
-  map <- map + scale_fill_gradient(low = "green", high = "red")
-  map <- map + scale_alpha(range = c(0.00, 0.25), guide = FALSE)
-  map <- map + theme(legend.position = "none", axis.title = element_blank(), text = element_text(size = 12))
-  map <- map + geom_point(aes(x = Longitude, y = Latitude), data = data, alpha = .5, color="black", size = data$Density*3)
-  map
-}
+# map <- function(data)
+# {
+#   coordinates<-as.numeric(geocode("pittsburgh"))
+#   myLocation <- c(lon= round(coordinates[1],2), lat=round(coordinates[2],2))
+#   myMap <- get_map(location=myLocation, source="stamen", maptype = "watercolor", crop = F, zoom = 13)
+# 
+#   map <- ggmap(myMap, extent = "panel", maprange=FALSE)
+#   map <- map + geom_density2d(data = data, aes(x = Longitude, y = Latitude))
+#   map <- map + stat_density2d(data = data, aes(x = Longitude, y = Latitude, fill = ..level.., alpha = ..level..), size = 0.01, bins = 16, geom = 'polygon')
+#   map <- map + scale_fill_gradient(low = "green", high = "red")
+#   map <- map + scale_alpha(range = c(0.00, 0.25), guide = FALSE)
+#   map <- map + theme(legend.position = "none", axis.title = element_blank(), text = element_text(size = 12))
+#   map <- map + geom_point(aes(x = Longitude, y = Latitude), data = data, alpha = .5, color="black", size = data$Density*3)
+#   map
+# }
 #options(warn=10)
 
 #results <- process()
-#write.csv(results, "C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\web\\charts\\results8.csv")
+#write.csv(results, "C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\web\\charts\\resultsA.csv")
 
 # #Restaurants, Phoenix, Highly significant, upward sloping
 # area.id <-7
@@ -290,22 +323,24 @@ map <- function(data)
 # B<-process.one.B(area.id,category.id)
 # display(B,"Dist","ML1.sd",TRUE,"Multinomial Logit Rating vs. Distance",3)
 
+#   area.id=1;category.id=21977
 #   area.id=7;category.id=21984
-#   charts.partial.path="C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\web\\charts\\chart"
+#   area.id=6;category.id=21929
+#   area.id=2;category.id=22667
+   
 B <- process.one.B(area.id,category.id)
 
-#   write.csv(B,"new data.csv")
 x.text <- "Distance to Closest Competitor (KM)"
-
-display(B,"Dist","YS1",FALSE,
+display(B, area.id, "YS1",FALSE,
         "Yelp Stars vs. Distance",x.text,"Yelp Rating (Stars)",10)
-display(B,"Dist","ML1",FALSE,
+display(B, area.id, "ML1",FALSE,
         "Standardized Median Absolute Deviation of Rating\nvs. Distance",x.text,"Standardized MAD Rating",20)
-display(B,"Dist","MLD1",TRUE,
+display(B, area.id, "MLD1",TRUE,
         "Difference Between Standardized MAD Rating of Closest Competitors\nvs. Distance",x.text,"Standardized MAD Rating Difference",30)
-display(B,"Dist","MLD3",TRUE,
+display(B, area.id, "MLD3",TRUE,
         "Difference Between Standardized MAD Rating Against 3 Closest Competitors\nvs. Distance","Weighted Distance to 3 Closest Competitors (KM)","Standardized MAD Rating Difference (Against 3 Closest)",40)
-display(B,"Dist","ML1.sd",TRUE,"Standard Deviation of Standardized MAD Ratings
-        vs. Distance",x.text,"Standard Deviation of Standardized MAD Ratings",60)
-display(B,"Dist","STD1.sd",TRUE,
-        "Standard Deviation of Yelp Stars\nvs. Distance",x.text,"Standard Deviation of Yelp Stars",70)
+display(B, area.id, "ML1.sd",TRUE,"Standard Deviation of Standardized MAD Ratings
+        vs. Distance",x.text,"Standard Deviation of Standardized MAD Ratings",50)
+
+#display(B,"STD1.sd",TRUE,
+#        "Standard Deviation of Yelp Stars\nvs. Distance",x.text,"Standard Deviation of Yelp Stars",70)
