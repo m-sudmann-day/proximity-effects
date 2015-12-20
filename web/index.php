@@ -23,7 +23,7 @@
 
     Yelp published approximately ten years of customer reviews for businesses within 10 geographies spanning four countries,
     61,000 businesses, 366,000 reviewers, and 1.6 million individual reviews.  Each business was attributed to one or more 
-    of about 1,000 business categories.
+    of about 800 business categories.
 
     <br /><br />
     
@@ -35,7 +35,7 @@
     
     <br /><br />
     
-    <img border="0" src="images/inverse_distance_weighting.gif" />
+    <img border="0" src="images/inverse_distance_weighting.gif" style='width:782px; height:273px' />
 
     <br /><br />
 
