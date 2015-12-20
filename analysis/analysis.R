@@ -1,20 +1,14 @@
-#rm(list=ls(all=TRUE))
 
-is.win = (Sys.info()['sysname'] == "Windows")
+######################################################################################
+# analysis.R
+#
+# This is the R script that is called from the website at runtime.
+# Final analysis of a subset of businesses are performed and charts are written
+# to the file system for retrieval by the website.
+######################################################################################
 
-if (is.win) {
-  require(ggplot2)
-  require(ggmap)
-  require(RMySQL)
-  require(fossil)
-} else {
-  lib.loc = "/home/ubuntu/projects/Rlibs"
-  require(ggplot2, lib.loc=lib.loc)
-  require(RMySQL, lib.loc=lib.loc)
-  require(fossil, lib.loc=lib.loc)
-  require(ggmap, lib.loc=lib.loc)
-}
-
+# Define some global variables, including those passed in as command line parameters.
+is.win               <- (Sys.info()['sysname'] == "Windows")
 mysql.user           <- "root"
 mysql.pwd            <- "root"
 mysql.server         <- "localhost"
@@ -24,6 +18,19 @@ charts.partial.path  <- args[1]
 area.id              <- args[2]
 category.id          <- args[3]
 
+# Load the R packages used by this script.
+if (is.win) {
+  require(ggplot2)
+  require(RMySQL)
+  require(fossil)
+} else {
+  lib.loc <- "/home/ubuntu/projects/Rlibs"
+  require(ggplot2, lib.loc=lib.loc)
+  require(RMySQL, lib.loc=lib.loc)
+  require(fossil, lib.loc=lib.loc)
+}
+
+# Define a generic function for fetching data from our MySQL database.
 fetch.data.from.sql <- function(sql)
 {
   conn <- dbConnect(MySQL(), user=mysql.user, password=mysql.pwd, host=mysql.server, dbname=mysql.database)
@@ -34,18 +41,9 @@ fetch.data.from.sql <- function(sql)
   return(results)
 }
 
-load.categories <- function()
-{
-  cats <- fetch.data.from.sql("call GetAllCategories();")
-  cats <- cats[cats$ID %in%
-    #c(21931,
-      c(21922,21938,22010,21918,21928,21917,21934,21923,21963,21919,21942,21957,21984,22106,
-      21946,21932,21941,21990,21969,21958,21954,21929,21950,21936,22015,21943,22014,21939,21933,
-      21966,21993,21937,21953,21916,22051,22005,21998,22016,22033,21944,21940,21948,22095,22011,
-      22094,22069,21926,22022,22000,22006,22168,21962,22027,22125,21951,22129,21997,22063,21930),]
-}
-
-load.data <- function(area, cat)
+# Load data about all the businesses in the given area/category combination.  These
+# data contains a number of columns containing pre-calculated portions of our analysis.
+load.businesses <- function(area, cat)
 {
   sql <- paste0("call GetBusinesses(", area, ", ", cat, ");")
   B <- fetch.data.from.sql(sql)
@@ -61,6 +59,8 @@ load.data <- function(area, cat)
   return(B)
 }
 
+# Using the Fossil package, obtain the distances between all businesses in our
+# area/category combination.
 calculate.distances <- function(B)
 {
   N <- nrow(B)
@@ -69,6 +69,10 @@ calculate.distances <- function(B)
   return(D)
 }
 
+# This function augments the data about each business by incorporating data from each business's nearest
+# competitor and each business's three nearest copmetitors, using inverse distance weighting.  It is called
+# multiple times, each time incorporating different sets of data, as per the parameters which tell it which
+# columns to read and write. 
 generate.more.columns <- function(B, D, read.col, write.col.1, write.col.3, write.col.1.diff, write.col.3.diff)
 {
   read.col <- which(colnames(B)==read.col)
@@ -131,91 +135,48 @@ generate.more.columns <- function(B, D, read.col, write.col.1, write.col.3, writ
   return(B)
 }
 
-process <- function()
+# This function oversees the data processing of the businesses in the area/category combination.
+# It loads all businesses, calculates distances, derives additional information from nearby
+# competitors, and returns a data frame containing all businesses.
+process <- function(area,cat)
 {
-  cats <- load.categories()
-  results <- data.frame("Area","Cat","Biz","Rev",
-                        "YS", "YSt", "ST1", "ST1t", "MLD1", "MLD1t", "MLD3", "MLD3t", "ST1.sd", "ST1.sdt", "ML1.sd", "ML1.sdt",
-                        stringsAsFactors=FALSE)
-  
-#   B <- generate.more.columns(B, D, "YS", "YS1", "YS3", "YSD1", "YSD3")
-#   B <- generate.more.columns(B, D, "ST", "ST1", "ST3", "STD1", "STD3")
-#   B <- generate.more.columns(B, D, "ST.sd", "ST1.sd", "ST3.sd", "STD1.sd", "STD3.sd")
-#   B <- generate.more.columns(B, D, "ML", "ML1", "ML3", "MLD1", "MLD3")
-#   B <- generate.more.columns(B, D, "ML.sd", "ML1.sd", "ML3.sd", "MLD1.sd", "MLD3.sd")
-# 
-  #cats <-data.frame(1)
-  #cats$ID=c(21984)
-
-  for (catindex in 1:nrow(cats))
-  {
-    #print(c("CATEGORY ", catindex))
-    for (area in 1:10)
-    {
-      if (!(catindex==70 && area==4))
-      {
-        cat <- cats$ID[catindex]
-        v <- process.one(area,cat)
-        if (!is.null(v))
-        {
-          results <- rbind(results, v)
-        }
-      }
-    }
-  }
-  
-  return(results)
-}
-
-process.one <- function(area,cat)
-{
-  B <- process.one.B(area, cat)
-  if (nrow(B)>10)
-  {
-    results <- data.frame("Area","Cat","Biz","Rev",
-                          "YS", "YSt", "ST1", "ST1t", "MLD1", "MLD1t", "MLD3", "MLD3t", "ST1.sd", "ST1.sdt", "ML1.sd", "ML1.sdt")
-                          
-    v <- c(area,cat,nrow(B),sum(B$ReviewCount))
-    v <- c(v, extract.regression.info(lm(data=B, formula=YS ~ Dist)))
-    v <- c(v, extract.regression.info(lm(data=B, formula=ST1 ~ Dist)))
-    v <- c(v, extract.regression.info(lm(data=B, formula=MLD1 ~ Dist)))
-    v <- c(v, extract.regression.info(lm(data=B, formula=MLD3 ~ Dist)))
-    v <- c(v, extract.regression.info(lm(data=B, formula=ST1.sd ~ Dist)))
-    v <- c(v, extract.regression.info(lm(data=B, formula=ML1.sd ~ Dist)))
-    v <- c(v, 99999)
-    return (v)
-  }
-  return(NULL)
-}
-
-process.one.B <- function(area,cat)
-{
-  B <- load.data(area, cat)
-  #print(c(cat,area,nrow(B)))
-
+  # Load all businesses.
+  B <- load.businesses(area, cat)
+  # Initialize the distances matrix.
   D <- NA
+
   if (nrow(B) > 0)
   {
+    # Populate the distances matrix.
     D <- calculate.distances(B)
 
+    # Initialize all columns that we calculate after the businesses data has been loaded.
     B$YS1 <- B$YS3 <- B$YSD1 <- B$YSD3 <- NA
     B$ST1 <- B$ST3 <- B$STD1 <- B$STD3 <- B$ST1.sd <- B$ST3.sd <- B$STD1.sd <- B$STD3.sd <- NA
     B$ML1 <- B$ML3 <- B$MLD1 <- B$MLD3 <- B$ML1.sd <- B$ML3.sd <- B$MLD1.sd <- B$MLD3.sd <- NA
     
+    # Calculate additional columns by incorporating competitor information into each business row.
     B <- generate.more.columns(B, D, "YS", "YS1", "YS3", "YSD1", "YSD3")
     B <- generate.more.columns(B, D, "ST", "ST1", "ST3", "STD1", "STD3")
     B <- generate.more.columns(B, D, "ST.sd", "ST1.sd", "ST3.sd", "STD1.sd", "STD3.sd")
     B <- generate.more.columns(B, D, "ML", "ML1", "ML3", "MLD1", "MLD3")
     B <- generate.more.columns(B, D, "ML.sd", "ML1.sd", "ML3.sd", "MLD1.sd", "MLD3.sd")
 
+    # For those areas outside the US, where we do not have population density information,
+    # simply use the same constant for all businesses, thereby causing population density to have
+    # no effect.
     if (area %in% c(1,2,9,10))
     {
       B$Density <- 1000
     }
+    # If there are null distances, ignore density and set our Dist*Density term to actually ignore density.
     else if (sum(is.null(B$Dist))>0)
     {
       B$DistDensity = B$Dist
     }
+    # For the remaining vast majority of cases, calculate the Dist*Density term to be distance times
+    # population densit.  Divide the result by 1000 to bring the value back down to a conceptual range
+    # that approximates kilometers.
     else
     {
       B$DistDensity <- B$Dist * B$Density / 1000
@@ -225,6 +186,9 @@ process.one.B <- function(area,cat)
   return(B)
 }
 
+# This function performs a generic action, receiving the output of a regression (calculated by
+# calling the lm() function) and then extracting the coefficient and t value and returning them
+# in a vector.
 extract.regression.info <- function(reg)
 {
   summ <- summary(reg)
@@ -236,43 +200,65 @@ extract.regression.info <- function(reg)
   return(c(reg$coef[2], t))
 }
 
+# This function takes a data frame of businesses and genearates a plot based on the parameters
+# of interest that are passed into the function.
 display <-function(B, area.id, y, run.reg, caption, xcaption, ycaption, index)
 {
   if (nrow(B) > 0)
   {
+    # Modify our copy of the businesses data frame so that the dependent variable of interest
+    # is always called 'Y'.
     colnames(B)[colnames(B)==y] <- "Y"
+
     plot <- ggplot(B) + theme_bw()
     plot <- plot + theme(axis.text =  element_text(face = "bold", size = 14))
     plot <- plot + theme(axis.title =  element_text(face = "bold", size = 14))
     plot <- plot + theme(plot.title =  element_text(face = "bold", size = 14))
     plot <- plot + ggtitle(paste0(caption, "  (N=", nrow(B), ")"))
-    #plot <- plot + ylim(0, 10) + xlim(0,2)
-    plot <- plot + geom_point(aes(x=DistDensity,y=Y), colour="blue", size=3)
+
+    # Define the appropriate independent variable to appear on the X axis.
+    if (area.id %in% c(1,2,9,10)) # no population density information available
+    {
+      plot <- plot + geom_point(aes(x=Dist,y=Y), colour="blue", size=3)
+    }
+    else
+    {
+      plot <- plot + geom_point(aes(x=DistDensity,y=Y), colour="blue", size=3)
+    }
+    
+    # Add a gray line to visually identify mark the center of our standardization, at Y=0.
     plot <- plot + geom_abline(intercept=0, slope=0, colour="gray", size=1)
     
     if (run.reg)
     {
-     if (area.id %in% c(1,2,9,10)) # no population density information available
-     {
-       reg <- lm(formula=B$Y ~ B$Dist)
-     }
-     else
-     {
-       reg <- lm(formula=B$Y ~ B$DistDensity) # + B$Dist + B$Density)
-     }
+      # If requested by the caller, perform a regression to prepare for displaying a fit line.
+      if (area.id %in% c(1,2,9,10)) # no population density information available
+      {
+        reg <- lm(formula=B$Y ~ B$Dist)
+      }
+      else
+      {
+        reg <- lm(formula=B$Y ~ B$DistDensity)
+      }
       summ <- summary(reg)
-      #print(summ)
+
+      # Extract data about the regression for displaying on the X-axis label.
       slope <- summ$coefficients[2, "Estimate"]
       slope <- sprintf("%.2f", slope)
       conf <- summ$coefficients[2, "Pr(>|t|)"]
       conf <- sprintf("%.1f%%", (1-conf)*100)
       xcaption <- paste0(xcaption, "\n(Slope=", slope, ", Confidence=", conf, ")")
+      
+      # Add a red line to the plot to show the fit line calculated by the regression.
       plot <- plot + geom_abline(intercept=reg$coefficients[1],slope=reg$coefficients[2],
          colour="red",size=1)
     }
     
     plot <- plot + labs(x=xcaption, y=ycaption)
   
+    # If an index was passed in, then this plot is intended to be written to the file system
+    # and used by the website.  Otherwise, we are in an interactive development state and should
+    # just return the plot object directly.
     if (index == 0)
     {
       return(plot)
@@ -286,61 +272,30 @@ display <-function(B, area.id, y, run.reg, caption, xcaption, ycaption, index)
   }
 }
 
+# Uncomment this for development purposes when there are no command line parameters.
+# It will give us pizza restaurants in Pittsburgh.
+# area.id=1;category.id=21984
 
-# map <- function(data)
-# {
-#   coordinates<-as.numeric(geocode("pittsburgh"))
-#   myLocation <- c(lon= round(coordinates[1],2), lat=round(coordinates[2],2))
-#   myMap <- get_map(location=myLocation, source="stamen", maptype = "watercolor", crop = F, zoom = 13)
-# 
-#   map <- ggmap(myMap, extent = "panel", maprange=FALSE)
-#   map <- map + geom_density2d(data = data, aes(x = Longitude, y = Latitude))
-#   map <- map + stat_density2d(data = data, aes(x = Longitude, y = Latitude, fill = ..level.., alpha = ..level..), size = 0.01, bins = 16, geom = 'polygon')
-#   map <- map + scale_fill_gradient(low = "green", high = "red")
-#   map <- map + scale_alpha(range = c(0.00, 0.25), guide = FALSE)
-#   map <- map + theme(legend.position = "none", axis.title = element_blank(), text = element_text(size = 12))
-#   map <- map + geom_point(aes(x = Longitude, y = Latitude), data = data, alpha = .5, color="black", size = data$Density*3)
-#   map
-# }
-#options(warn=10)
+# Call the process function to populate and manipulate a data frame of businesses.
+B <- process(area.id, category.id)
 
-#results <- process()
-#write.csv(results, "C:\\OneDrive\\BGSE\\GitHub\\proximity-effects\\web\\charts\\resultsA.csv")
-
-# #Restaurants, Phoenix, Highly significant, upward sloping
-# area.id <-7
-# category.id<-21931
-# B<-process.one.B(area.id,category.id)
-# display(B,"Dist","ML1",TRUE,"Multinomial Logit Rating vs. Distance",1)
-# #Pizza, Phoenix, Highly significant, upward sloping
-# area.id <-6
-# category.id<-21954
-# B<-process.one.B(area.id,category.id)
-# display(B,"Dist","ML1.sd",TRUE,"Multinomial Logit Rating vs. Distance",2)
-# #Coffee and Tea, Montreal, Highly significant, upward sloping ML1.sd
-# area.id <-4
-# category.id<-21938
-# B<-process.one.B(area.id,category.id)
-# display(B,"Dist","ML1.sd",TRUE,"Multinomial Logit Rating vs. Distance",3)
-
-#   area.id=1;category.id=21977
-#   area.id=7;category.id=21984
-#   area.id=6;category.id=21929
-#   area.id=2;category.id=22667
-   
-B <- process.one.B(area.id,category.id)
-
-x.text <- "Distance to Closest Competitor (KM)"
+# Call the display function to produce each of five charts.
 display(B, area.id, "YS1",FALSE,
-        "Yelp Stars vs. Distance",x.text,"Yelp Rating (Stars)",10)
+        "Yelp Stars vs. Distance",
+        "Distance to Closest Competitor (KM)",
+        "Yelp Rating (Stars)",10)
 display(B, area.id, "ML1",FALSE,
-        "Standardized Median Absolute Deviation of Rating\nvs. Distance",x.text,"Standardized MAD Rating",20)
+        "Standardized Median Absolute Deviation of Rating\nvs. Distance",
+        "Distance to Closest Competitor (KM)",
+        "Standardized MAD Rating",20)
 display(B, area.id, "MLD1",TRUE,
-        "Difference Between Standardized MAD Rating of Closest Competitors\nvs. Distance",x.text,"Standardized MAD Rating Difference",30)
+        "Difference Between Standardized MAD Rating of Closest Competitors\nvs. Distance",
+        "Distance to Closest Competitor (KM)",
+        "Standardized MAD Rating Difference",30)
 display(B, area.id, "MLD3",TRUE,
-        "Difference Between Standardized MAD Rating Against 3 Closest Competitors\nvs. Distance","Weighted Distance to 3 Closest Competitors (KM)","Standardized MAD Rating Difference (Against 3 Closest)",40)
+        "Difference Between Standardized MAD Rating Against 3 Closest Competitors\nvs. Distance",
+        "Weighted Distance to 3 Closest Competitors (KM)",
+        "Standardized MAD Rating Difference (Against 3 Closest)",40)
 display(B, area.id, "ML1.sd",TRUE,"Standard Deviation of Standardized MAD Ratings
-        vs. Distance",x.text,"Standard Deviation of Standardized MAD Ratings",50)
-
-#display(B,"STD1.sd",TRUE,
-#        "Standard Deviation of Yelp Stars\nvs. Distance",x.text,"Standard Deviation of Yelp Stars",70)
+        vs. Distance","Distance to Closest Competitor (KM)",
+        "Standard Deviation of Standardized MAD Ratings",50)
