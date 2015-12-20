@@ -15,7 +15,7 @@
 <?php
 $mysqlserver = "localhost";
 $mysqlusername = "root";
-$mysqlpassword = "root";
+$mysqlpassword = "";
 ?>
 
 <br /><br />
