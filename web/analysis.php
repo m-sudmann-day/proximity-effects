@@ -96,7 +96,7 @@ $selected_category_id = $_POST["ddlCategories"];
 
             if ($isPost && $selected_area_id != -1 && $selected_category_id != -1)
             {
-                $cmd = sprintf("%s %s %s %d %d", $rEngine, $rScript, $rCharts, #  >&1 2>&1
+                $cmd = sprintf("%s %s %s %d %d 2>&1", $rEngine, $rScript, $rCharts, #  >&1 2>&1
                     $selected_area_id, $selected_category_id);
                 $result = system($cmd);
                 $files = $rCharts . ".*";

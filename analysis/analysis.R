@@ -26,6 +26,11 @@ if (is.win) {
   require(fossil)
 } else {
   lib.loc <- "/home/ubuntu/projects/Rlibs"
+  require(DBI, lib.loc=lib.loc)
+  require(sp, lib.loc=lib.loc)
+  require(maps, lib.loc=lib.loc)
+  require(shapefiles, lib.loc=lib.loc)
+  require(labeling, lib.loc=lib.loc)
   require(ggplot2, lib.loc=lib.loc)
   require(RMySQL, lib.loc=lib.loc)
   require(fossil, lib.loc=lib.loc)
@@ -34,7 +39,7 @@ if (is.win) {
 # Define a generic function for fetching data from our MySQL database.
 fetch.data.from.sql <- function(sql)
 {
-  conn <- dbConnect(MySQL(), user=mysql.user, password=mysql.pwd, host=mysql.server, dbname=mysql.database)
+  conn <- dbConnect(MySQL(), user=mysql.user, host=mysql.server, dbname=mysql.database)
   rs <- dbSendQuery(conn, sql)
   results <- fetch(rs, n=-1)
   dbClearResult(rs) -> sink

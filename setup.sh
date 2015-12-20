@@ -48,13 +48,13 @@ install)
 	sudo Rscript --vanilla setup.R
 
 	echo "  Creating database schema..."
-	mysql -u $user -p$pswd < $db_dir/schema.sql
+	mysql -u $user < $db_dir/schema.sql
 	echo "  Loading data..."
-	mysql -u $user -p$pswd < $db_dir/load.sql
+	mysql -u $user < $db_dir/load.sql
 	echo "  Creating indexes..."
-	mysql -u $user -p$pswd < $db_dir/indexes.sql
+	mysql -u $user < $db_dir/indexes.sql
 	echo "  Creating routines..."
-	mysql -u $user -p$pswd < $db_dir/routines.sql
+	mysql -u $user < $db_dir/routines.sql
 
 	echo 'Copying the web files...'
 	mkdir -p "$target_dir/MyApp"
@@ -66,7 +66,7 @@ install)
 uninstall)
 	echo "Uninstalling"
 
-	mysql -u $user -p$pswd -e "DROP DATABASE proximity_effects;" 
+	mysql -u $user -e "DROP DATABASE proximity_effects;" 
 	rm -rf "$target_dir/MyApp"
 
 	echo "done!"
