@@ -1,8 +1,9 @@
 
 ######################################################################################
-# analysis.R
+# analysis.R (RUNTIME ANALYSIS SCRIPT)
 #
-# This is the R script that is called from the website at runtime.
+# This is the R script that is called from the website at runtime when a user
+# submits a request to analyze an area/category combination for proximity effects.
 # Final analysis of a subset of businesses are performed and charts are written
 # to the file system for retrieval by the website.
 ######################################################################################
