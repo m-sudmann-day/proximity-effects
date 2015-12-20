@@ -13,7 +13,7 @@ The dashboard consists of a PHP website and a MySql database and runs realtime a
 
 ### R
 
-The runtime analysis requires at least version 3.7 of R to be installed.  The installation script assumes some previous version has already been installed, and then upgrades to the latest if it can.
+The runtime analysis requires at least version 3.7 of R to be installed.  The installation script assumes some previous version has already been installed, and then upgrades to the latest if needed.
 
 The R analysis relies on the following packages which are installed automatically by the installation script:
 
