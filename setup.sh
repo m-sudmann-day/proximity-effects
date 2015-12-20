@@ -74,7 +74,8 @@ uninstall)
 
 run)
 	echo "The application is already running."
-
+	;;
+	
 *)
 	echo "Unknown Command!"
 
