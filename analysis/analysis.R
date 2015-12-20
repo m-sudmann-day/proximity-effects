@@ -11,7 +11,7 @@
 # Define some global variables, including those passed in as command line parameters.
 is.win               <- (Sys.info()['sysname'] == "Windows")
 mysql.user           <- "root"
-mysql.pwd            <- "root"
+mysql.pwd            <- ""
 mysql.server         <- "localhost"
 mysql.database       <- "proximity_effects"
 args                 <- commandArgs(TRUE)
