@@ -49,15 +49,4 @@
 
     To conclude, our results vary in magnitude, direction, and significance between business categories, and to a lesser extent, between geographical areas.  Many of the category/area combinations have too few businesses to draw statistical conclusions, but many also have plenty.  The Data tab gives a high-level summary of the data available.  The Analysis tab is to enable the user to explore specific categories and geographical areas to visualize these effects and draw their own conclusions.
 
-    <br /><br />
-    
-    <img border="0" src="images/inverse_distance_weighting.gif" />
-    
-    <br /><br />
-    
-    After removing this noise in the data, we control for population density. We take into account that density is not homogeneous in one district. However, the only population density data that is available is based on zip codes.
-    Therefore, we calculate the density of each business by averaging the four closest zip-code densities.
-    Having in mind what our Yelp data is, we can say that we have successfully controlled for the effect of consumer tastes and population density. Therefore, we can answer the question we have initially posed - is there proximity effect?
-    If so, what is the magnitude? To illustrate, we take the standard deviation of each business in the same category in order to highlight the effect of ratings influence on increasing distance. In order to answer that, we control for distance in our regression. To conclude, it is observable  that evident proximity effect exists, however, further investigation and additional data are needed in order to clean the Yelp data from other biases.
-
 </div>
