@@ -35,7 +35,7 @@
     
     <br /><br />
     
-    <img border="0" src="images/inverse_distance_weighting.gif" width="150%" height="150%" />
+    <img border="0" src="images/inverse_distance_weighting.gif" width="150%" />
 
     <br /><br />
 
@@ -46,7 +46,7 @@
 
     <br /><br />
 
-    <img border="0" src="images/likert.png" width="150%" height="150%" />
+    <img border="0" src="images/likert.png" width="150%" />
 
     <br /><br />
 
