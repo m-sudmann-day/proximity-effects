@@ -1,5 +1,5 @@
 # PROXIMITY EFFECTS AND CONSUMER SENTIMENT
-### Group 1
+### Group 1, Barcelona GSE Master in Data Science
 
 Nick Halliwell, Denitsa Panova, Matthew Sudmann-Day
 
