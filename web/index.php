@@ -35,18 +35,18 @@
     
     <br /><br />
     
-    <img border="0" src="images/inverse_distance_weighting.gif" />
+    <img border="0" src="images/inverse_distance_weighting.gif" width="150%" height="150%" />
 
     <br /><br />
 
-    Yelp ratings follow the format of typical “star ratings”; reviewers can select a round number of stars from one to five.
+    Yelp ratings follow the format of typical star ratings; reviewers can select a round number of stars from one to five.
     Recognizing that these scores are more appropriately treated as ordered categories than actual numbers, we turned to the
     <a href="https://en.wikipedia.org/wiki/Likert_scale">Likert scale</a>.  The Likert scale interprets questionnaire-style
     categories such as the following:
 
     <br /><br />
 
-    <img border="0" src="images/likert.png" />
+    <img border="0" src="images/likert.png" width="150%" height="150%" />
 
     <br /><br />
 
