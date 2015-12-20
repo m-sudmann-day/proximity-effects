@@ -1,4 +1,4 @@
-# PROXIMITY EFFECTS AND CONSUMER SENTIMENT
+# PROXIMITY EFFECTS ON CONSUMER SENTIMENT
 ### Group 1, Barcelona GSE Master in Data Science
 
 Nick Halliwell, Denitsa Panova, Matthew Sudmann-Day
