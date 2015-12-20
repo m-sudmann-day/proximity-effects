@@ -1,8 +1,8 @@
-<title>Proximity Effects on Customer Sentiment</title>
+<title>Proximity Effects on Consumer Sentiment</title>
 <link rel="stylesheet" type="text/css" href="style.css" />
 <script src="js/navbar.js" type="text/javascript"></script>
 
-<div id="header"><h1>Proximity Effects on Customer Sentiment</h1></div>
+<div id="header"><h1>Proximity Effects on Consumer Sentiment</h1></div>
 
 
 <div id="menu">
