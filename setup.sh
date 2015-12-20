@@ -27,9 +27,6 @@ install)
 	sudo chmod 777 $data_dir
 	sudo chmod 777 $data_dir/*
 	sudo chmod 777 $target_dir
-	sudo mkdir $target_dir/MyApp/charts
-	sudo chmod 777 $target_dir/*
-	sudo chmod 777 $target_dir/MyApp/charts
 
 	echo 'Installing the most recent version of R...'
 	ubuntu_r_blog/installing-r.html
@@ -59,6 +56,10 @@ install)
 	echo 'Copying the web files...'
 	mkdir -p "$target_dir/MyApp"
 	cp -rf web/* "$target_dir/MyApp"
+
+	echo 'Creating the folder for chart creation...'
+	sudo mkdir $target_dir/MyApp/charts
+	sudo chmod 777 $target_dir/MyApp/charts
 
 	echo "done!"
 	;;
