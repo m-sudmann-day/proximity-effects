@@ -1,4 +1,4 @@
-<title>Proximity Effects on Customer Sentiment</title>
+<title>Proximity Effects on Consumer Sentiment</title>
 <link rel="stylesheet" type="text/css" href="style.css" />
 <script src="js/navbar.js" type="text/javascript"></script>
 
