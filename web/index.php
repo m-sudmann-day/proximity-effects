@@ -69,4 +69,8 @@
     The <a href="analysis.php">Analysis</a> tab is to enable the user to explore specific categories and geographical areas to
     visualize these effects and draw their own conclusions.
 
+    <br /><br />
+
+    Contributors: Nick Halliwell, Denitsa Panova, Matthew Sudmann-Day
+
 </div>

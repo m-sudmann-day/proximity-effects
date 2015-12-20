@@ -113,7 +113,7 @@ $selected_category_id = $_POST["ddlCategories"];
         </table>
 
         <?php
-        if (!$atLeastOneFile)
+        if (!$atLeastOneFile && $isPost)
         {
             echo("<br /><br />The combination of geographic area and business category that you selected did not contain enough businesses to perform an analysis.");
         }
