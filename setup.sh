@@ -29,7 +29,6 @@ install)
 	sudo chmod 777 $target_dir
 
 	echo 'Installing the most recent version of R...'
-	ubuntu_r_blog/installing-r.html
 	sudo add-apt-repository ppa:marutter/rrutter  --yes
 	sudo apt-get update 
 	sudo apt-get --yes --force-yes install r-base r-base-dev 
