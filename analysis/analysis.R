@@ -275,28 +275,14 @@ display <-function(B, area.id, y, run.reg, caption, xcaption, ycaption, index)
 
 # Uncomment this for development purposes when there are no command line parameters.
 # It will give us pizza restaurants in Pittsburgh.
-# area.id=1;category.id=21984
+# area.id=7;category.id=21984
 
 # Call the process function to populate and manipulate a data frame of businesses.
 B <- process(area.id, category.id)
 
 # Call the display function to produce each of five charts.
-display(B, area.id, "YS1",FALSE,
-        "Yelp Stars vs. Distance",
-        "Distance to Closest Competitor (KM)",
-        "Yelp Rating (Stars)",10)
-display(B, area.id, "ML1",FALSE,
-        "Standardized Median Absolute Deviation of Rating\nvs. Distance",
-        "Distance to Closest Competitor (KM)",
-        "Standardized MAD Rating",20)
-display(B, area.id, "MLD1",TRUE,
-        "Difference Between Standardized MAD Rating of Closest Competitors\nvs. Distance",
-        "Distance to Closest Competitor (KM)",
-        "Standardized MAD Rating Difference",30)
-display(B, area.id, "MLD3",TRUE,
-        "Difference Between Standardized MAD Rating Against 3 Closest Competitors\nvs. Distance",
-        "Weighted Distance to 3 Closest Competitors (KM)",
-        "Standardized MAD Rating Difference (Against 3 Closest)",40)
-display(B, area.id, "ML1.sd",TRUE,"Standard Deviation of Standardized MAD Ratings
-        vs. Distance","Distance to Closest Competitor (KM)",
-        "Standard Deviation of Standardized MAD Ratings",50)
+display(B, area.id, "YS1", FALSE, "Yelp Stars vs. Distance", "Distance to Closest Competitor (KM)", "Yelp Rating (Stars)", 10)
+display(B, area.id, "ML1", FALSE, "Standardized Median Absolute Deviation of Rating\nvs. Distance", "Distance to Closest Competitor (KM)", "Standardized MAD Rating", 20)
+display(B, area.id, "MLD1", TRUE, "Difference Between Standardized MAD Rating of Closest Competitors\nvs. Distance", "Distance to Closest Competitor (KM)", "Standardized MAD Rating Difference", 30)
+display(B, area.id, "MLD3", TRUE, "Difference Between Standardized MAD Rating Against 3 Closest Competitors\nvs. Distance", "Weighted Distance to 3 Closest Competitors (KM)","Standardized MAD Rating Difference (Against 3 Closest)", 40)
+display(B, area.id, "ML1.sd", TRUE, "Standard Deviation of Standardized MAD Ratings vs. Distance", "Distance to Closest Competitor (KM)", "Standard Deviation of Standardized MAD Ratings", 50)
