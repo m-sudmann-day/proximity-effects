@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css" href="style.css" />
 <script src="js/navbar.js" type="text/javascript"></script>
 
-<div id="header"><h1>Proximity Effects on Customer Sentiment</h1></div>
+<div id="header"><h1>Proximity Effects on Consumer Sentiment</h1></div>
 
 <div id="menu">
     <a id="home_link" href="index.php" onclick="show_content('home'); return false;">Home</a> &middot;
