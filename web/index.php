@@ -13,33 +13,47 @@
 
 <div id="main" style="width:99%; margin:0px; padding:0px; font-size:16; margin-left:30px; margin-right:30px">
 
-    <br />
-    <br />
+    <br /><br />
 
-    Do customer's expectations change in the presence of competition? In order to answer this question we user our Yelp dataset.
+    Does consumer sentiment change in the presence of local competition? In order to answer this question, we turned to a publicly available dataset from the business review site Yelp.com.
+
+    <br /><br />
+
+    Yelp published approximately ten years of customer reviews for businesses within 10 geographies spanning four countries, 61,000 businesses, 366,000 reviewers, and 1.6 million individual reviews.  Each business was attributed to one or more of about 1,000 business categories.
+
+    <br /><br />
     
-    <br />
-    <br />
-
-    An initial step in our analysis is to see if there is evidence for such effect. Regressing the original Yelp-star rating to distance between businesses from the same category reveals that our initial hypothesis is relevant and we need to investigate further.
-    Before continuing and calculating the magnitude of the proximity effect, we need specific cleaning and standardizing the data. Our dataset is Likert, such that it represents users' preferences on a questionnaire scale. Analyzing it requires a specific methodology.
+    Additionally, for the US-based businesses, we obtained population density information from the US Census Bureau and used inverse distance weighting to calculate specific population density estimates for each individual business allowing us to adjust for population density in our distance calculations for those cities.  The inverse distance weighting method we used is documented here, but for a quick understanding, the diagram and equation below show how values are averaged together, giving more weight to those with less distance:
     
-    <br />
-    <br />
-    <img border="0" src="images/likert.png" />
-    <br />
-    <br />
-
-    Since every person have different perceptions, we cannot assume that 2-star rating for one reviewer means the same thing as for another Yelp user. Therefore, we need to average out, smooth and standardize the ratings. However, excluding the customers' bias has its peculiarities as well.
-    The data that we have is of the type agree-disagree, meaning although there is "greater than" relation between both statements, it is not clear by how much. 
-    Therefore, in order to standardize the rating for each user we look at their median and the absolute median deviation instead of the typical statistics - mean and standard deviation. For each user, we calculate new ratings based on their reviews given.  
-    Subsequently, we re-estimate each business rating, using these adjusted user reviews. Since we do not have any additional information on the reviewers', this is the only way to control for the personality traits.
-
-    <br />
-    <br />
+    <br /><br />
+    
     <img border="0" src="images/inverse_distance_weighting.gif" />
-    <br />
-    <br />
+
+    <br /><br />
+
+    Yelp ratings follow the format of typical “star ratings”; reviewers can select a round number of stars from one to five.  Recognizing that these scores are more appropriately treated as ordered categories than actual numbers, we turned to the Likert scale.  The Likert scale interprets questionnaire-style categories such as the following:
+
+    <br /><br />
+
+    <img border="0" src="images/likert.png" />
+
+    <br /><br />
+
+    The categories in this data have different meanings to different people so the Likert scale avoids attempting to quantify them directly.  For this reason, centrality is better identified by the median than the mean, and deviation is better identified by absolute deviation than standard deviation.
+
+    <br /><br />
+
+    Subsequently, we standardized the ratings of every individual review against the distribution of ratings by the corresponding reviewer.  This gave us a median of 0 with an absolute deviation of 1 for every business review against the behavior of the specific reviewer.  Then we averaged those standardized ratings to obtain new ratings for each individual business on the same scale.
+
+    <br /><br />
+
+    To conclude, our results vary in magnitude, direction, and significance between business categories, and to a lesser extent, between geographical areas.  Many of the category/area combinations have too few businesses to draw statistical conclusions, but many also have plenty.  The Data tab gives a high-level summary of the data available.  The Analysis tab is to enable the user to explore specific categories and geographical areas to visualize these effects and draw their own conclusions.
+
+    <br /><br />
+    
+    <img border="0" src="images/inverse_distance_weighting.gif" />
+    
+    <br /><br />
     
     After removing this noise in the data, we control for population density. We take into account that density is not homogeneous in one district. However, the only population density data that is available is based on zip codes.
     Therefore, we calculate the density of each business by averaging the four closest zip-code densities.
