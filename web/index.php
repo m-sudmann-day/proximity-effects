@@ -11,7 +11,7 @@
     <a id="analysis_link" href="analysis.php" onclick="show_content('analysis'); return false;">Analysis</a>
 </div>
 
-<div id="main" style="width:99%; margin:0px; padding:0px; font-size:16; margin-left:30px; margin-right:30px">
+<div id="main" style="width:95%; margin:0px; padding:0px; font-size:16; margin-left:30px; margin-right:30px">
 
     <br /><br />
 
