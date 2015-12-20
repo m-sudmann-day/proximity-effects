@@ -25,6 +25,7 @@ The R analysis relies on the following packages which are installed automaticall
 - sp
 - maps
 - shapefiles
+
 (dplyr was used in the pre-runtime analysis, but is not required at runtime.)
 
 ### Acknowledgements
