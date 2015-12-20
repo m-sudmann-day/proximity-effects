@@ -273,7 +273,6 @@ display <-function(B, area.id, y, run.reg, caption, xcaption, ycaption, index)
     {
       filename = paste0(charts.partial.path, ".", index, ".png", sep="")
       ggsave(filename=filename, width=8, height=6, units="in", dpi=100, plot=plot)
-      return(plot)
     }
   }
 }
