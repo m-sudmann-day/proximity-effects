@@ -14,7 +14,7 @@
 <?php
 $mysqlserver = "localhost";
 $mysqlusername = "root";
-$mysqlpassword = "root";
+$mysqlpassword = "";
 
 /* Forgive me for I have sinned. */
 $isWin = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
