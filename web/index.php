@@ -16,7 +16,8 @@
     <br /><br />
 
     Does consumer sentiment change in the presence of local competition? In order to answer this question, we turned to a
-    publicly available dataset from the business review site <a href="Yelp.com">Yelp.com</a>.
+    publicly available <a href="http://www.yelp.co.uk/dataset_challenge">dataset</a> from the business review site
+    <a href="http://Yelp.com">Yelp.com</a>.
 
     <br /><br />
 
@@ -65,7 +66,7 @@
     To conclude, our results vary in magnitude, direction, and significance between business categories, and to a lesser extent,
     between geographical areas.  Many of the category/area combinations have too few businesses to draw statistical conclusions,
     but many also have plenty.  The <a href="data.php">Data</a> tab gives a high-level summary of the data available.
-    The <a href="Analysis">Analysis</a> tab is to enable the user to explore specific categories and geographical areas to
+    The <a href="analysis.php">Analysis</a> tab is to enable the user to explore specific categories and geographical areas to
     visualize these effects and draw their own conclusions.
 
 </div>
