@@ -111,7 +111,6 @@ $selected_category_id = $_POST["ddlCategories"];
                         echo("4) <b>Difference Between Standardized MAD Rating Against 3 Closest Competitors vs. Distance</b>: This is similar to the previous chart, but typically a diluted result.  The distances and ratings of the three closest competitors are merged into a single value using inverse distance weighting then compared against the plotted businesses to generated the Y-axis value.<br /><br />");
                         echo("5) <b>Standard Deviation of Standardized MAD Ratings vs. Distance</b>:  This chart digs one level deeper and looks at the standard deviation of individual standardized reviews for each business plotted against the distance to the nearest competitor.  The fit line shows the correlation between this level of variance and the distance to the closest competitor.<br /><br />");
                         echo("Interpretation of the results is left to the reader.  The slopes and significances vary greatly between business categories and somewhat between geographies.  The title of each chart shows how many businesses are included in the analysis.");
-                        }
                         $atLeastOneFile = TRUE;
                     }
                     echo("<tr><td>&nbsp;</td></tr>");
