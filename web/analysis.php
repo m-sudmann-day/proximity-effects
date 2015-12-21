@@ -100,6 +100,7 @@ $selected_category_id = $_POST["ddlCategories"];
                 {
                     if (!$atLeastOneFile)
                     {
+                        echo("<tr><td colspan='2'>&nbsp;</td></tr>");
                         echo("<tr><td colspan='2'>In all of the charts below, each point is an individual business.  The X-axis represents  the distance to the closest competitor of that business in kilometres.  For US cities, this value is adjusted slightly to compensate for population density variation within the sample.  Assuming enough data is available for each chart, the following are the charts that appear below:</td></tr>");
                         echo("<tr><td colspan='2'>1) <b>Yelp Stars vs. Distance</b>: These are the raw star ratings as calculated by Yelp’s own algorithm.  This is for demonstration purposes only.</td></tr>");
                         echo("<tr><td colspan='2'>2) <b>Standardized Median Absolute Deviation of Rating vs. Distance</b>: The ratings that we assign to each business after standardizing individual reviewers and individual review.  The Y-axis represents the businesses’ number of (MAD) deviations from the median.</td></tr>");
