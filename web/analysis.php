@@ -102,7 +102,18 @@ $selected_category_id = $_POST["ddlCategories"];
                 $files = $rCharts . ".*";
                 foreach(glob($files) as $file)
                 {
-                    $atLeastOneFile = TRUE;
+                    if (!$atLeastOneFile)
+                    {
+                        echo("In all of the charts below, each point is an individual business.  The X-axis represents  the distance to the closest competitor of that business in kilometres.  For US cities, this value is adjusted slightly to compensate for population density variation within the sample.  Assuming enough data is available for each chart, the following are the charts that appear below:<br /><br />");
+                        echo("1) <b>Yelp Stars vs. Distance</b>: These are the raw star ratings as calculated by Yelp’s own algorithm.  This is for demonstration purposes only.<br /><br />");
+                        echo("2) <b>Standardized Median Absolute Deviation of Rating vs. Distance</b>: The ratings that we assign to each business after standardizing individual reviewers and individual review.  The Y-axis represents the businesses’ number of (MAD) deviations from the median.<br /><br />");
+                        echo("3) <b>Difference Between Standardized MAD Rating of Closest Competitors vs. Distance</b>: Again each point is a business, but the Y-axis is the difference between the number of deviations from the median that the two business have, or the difference in consumer sentiment.  The red fit line depicts the correlation of distance between competitors to difference in consumer sentiment.<br /><br />");
+                        echo("4) <b>Difference Between Standardized MAD Rating Against 3 Closest Competitors vs. Distance</b>: This is similar to the previous chart, but typically a diluted result.  The distances and ratings of the three closest competitors are merged into a single value using inverse distance weighting then compared against the plotted businesses to generated the Y-axis value.<br /><br />");
+                        echo("5) <b>Standard Deviation of Standardized MAD Ratings vs. Distance</b>:  This chart digs one level deeper and looks at the standard deviation of individual standardized reviews for each business plotted against the distance to the nearest competitor.  The fit line shows the correlation between this level of variance and the distance to the closest competitor.<br /><br />");
+                        echo("Interpretation of the results is left to the reader.  The slopes and significances vary greatly between business categories and somewhat between geographies.  The title of each chart shows how many businesses are included in the analysis.");
+                        }
+                        $atLeastOneFile = TRUE;
+                    }
                     echo("<tr><td>&nbsp;</td></tr>");
                     echo("<tr><td style='width:100%; text-align:center; align:center'><img style='min-width:800px' src='charts/"
                     . basename($file) . "'/></td></tr>");
@@ -116,17 +127,6 @@ $selected_category_id = $_POST["ddlCategories"];
         if (!$atLeastOneFile && $isPost)
         {
             echo("<br /><br />The combination of geographic area and business category that you selected did not contain enough businesses to perform an analysis.");
-        }
-        
-        if ($atLeastOneFile && $isPost)
-        {
-            echo("In all of the charts below, each point is an individual business.  The X-axis represents  the distance to the closest competitor of that business in kilometres.  For US cities, this value is adjusted slightly to compensate for population density variation within the sample.  Assuming enough data is available for each chart, the following are the charts that appear below:<br /><br />");
-            echo("1) <b>Yelp Stars vs. Distance</b>: These are the raw star ratings as calculated by Yelp’s own algorithm.  This is for demonstration purposes only.<br /><br />");
-            echo("2) <b>Standardized Median Absolute Deviation of Rating vs. Distance</b>: The ratings that we assign to each business after standardizing individual reviewers and individual review.  The Y-axis represents the businesses’ number of (MAD) deviations from the median.<br /><br />");
-            echo("3) <b>Difference Between Standardized MAD Rating of Closest Competitors vs. Distance</b>: Again each point is a business, but the Y-axis is the difference between the number of deviations from the median that the two business have, or the difference in consumer sentiment.  The red fit line depicts the correlation of distance between competitors to difference in consumer sentiment.<br /><br />");
-            echo("4) <b>Difference Between Standardized MAD Rating Against 3 Closest Competitors vs. Distance</b>: This is similar to the previous chart, but typically a diluted result.  The distances and ratings of the three closest competitors are merged into a single value using inverse distance weighting then compared against the plotted businesses to generated the Y-axis value.<br /><br />");
-            echo("5) <b>Standard Deviation of Standardized MAD Ratings vs. Distance</b>:  This chart digs one level deeper and looks at the standard deviation of individual standardized reviews for each business plotted against the distance to the nearest competitor.  The fit line shows the correlation between this level of variance and the distance to the closest competitor.<br /><br />");
-            echo("Interpretation of the results is left to the reader.  The slopes and significances vary greatly between business categories and somewhat between geographies.  The title of each chart shows how many businesses are included in the analysis.");
         }
         ?>
 </form>
