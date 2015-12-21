@@ -46,10 +46,12 @@ $selected_category_id = $_POST["ddlCategories"];
         <br />
         <br />
 
-        Select a business category and geographical area to analyze.
-
-        <br />
-        <br />
+        <?php
+        if (!$isPost)
+        {
+            echo ("Select a business category and geographical area to analyze.<br /><br />");
+        }
+        ?>
 
         <table style="width:100%; align-content:center; align-items:center; align-self:center;">
 
